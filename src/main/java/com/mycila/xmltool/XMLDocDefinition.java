@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2008 Mathieu Carbou <mathieu.carbou@gmail.com>
+ * Copyright (C) 2008 Mycila (mathieu.carbou@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.mycila.xmltool;
 
-import static com.mycila.xmltool.Utils.*;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
@@ -25,7 +23,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
-import static javax.xml.XMLConstants.*;
 import javax.xml.namespace.NamespaceContext;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,6 +30,15 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+
+import static com.mycila.xmltool.Utils.notEmpty;
+import static com.mycila.xmltool.Utils.notNull;
+import static javax.xml.XMLConstants.DEFAULT_NS_PREFIX;
+import static javax.xml.XMLConstants.NULL_NS_URI;
+import static javax.xml.XMLConstants.XMLNS_ATTRIBUTE;
+import static javax.xml.XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
+import static javax.xml.XMLConstants.XML_NS_PREFIX;
+import static javax.xml.XMLConstants.XML_NS_URI;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

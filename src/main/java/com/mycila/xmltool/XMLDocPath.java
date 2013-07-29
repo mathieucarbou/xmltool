@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2008 Mathieu Carbou <mathieu.carbou@gmail.com>
+ * Copyright (C) 2008 Mycila (mathieu.carbou@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.mycila.xmltool;
 
-import static com.mycila.xmltool.Utils.*;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.namespace.QName;
 import javax.xml.xpath.XPath;
-import static javax.xml.xpath.XPathConstants.*;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.util.Map;
+
+import static com.mycila.xmltool.Utils.notEmpty;
+import static com.mycila.xmltool.Utils.notNull;
+import static javax.xml.xpath.XPathConstants.BOOLEAN;
+import static javax.xml.xpath.XPathConstants.NODE;
+import static javax.xml.xpath.XPathConstants.NODESET;
+import static javax.xml.xpath.XPathConstants.NUMBER;
+import static javax.xml.xpath.XPathConstants.STRING;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2008 Mathieu Carbou <mathieu.carbou@gmail.com>
+ * Copyright (C) 2008 Mycila (mathieu.carbou@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.mycila.xmltool;
 
 import org.w3c.dom.Document;
@@ -27,7 +26,6 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
-import javax.xml.transform.dom.DOMSource;
 import java.io.BufferedInputStream;
 import java.io.Closeable;
 import java.io.File;
