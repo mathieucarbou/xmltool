@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Mycila XML Tool by mycila</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Mycila XML Tool</h1>
+          <h2>XML manipulation library in Java built on a Fluent API</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/mycila/xmltool/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/mycila/xmltool/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/mycila/xmltool" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <p><strong>Table of Contents</strong></p>
+
+<ul>
+<li>
+<a href="#mycila-jmx">Mycila JMX</a>
+
+<ul>
+<li><a href="#maven-repository">Maven Repository</a></li>
+<li>
+<a href="#documentation">Documentation</a>
+
+<ul>
+<li><a href="#1-annotations">1. Annotations</a></li>
+<li><a href="#2-dynamic-naming">2. Dynamic naming</a></li>
+<li><a href="#3-how-to-use">3. How to use</a></li>
+<li><a href="#4-jmxmetadataassembler">4. JmxMetadataAssembler</a></li>
+<li><a href="#5-mycile-guice-integration">5. Mycile Guice Integration</a></li>
+<li><a href="#6-tools">6. Tools</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul><h1>
+<a name="mycila-xml-tool" class="anchor" href="#mycila-xml-tool"><span class="octicon octicon-link"></span></a>Mycila XML Tool</h1>
+
+<p>This small project enables to export your classes easily through JMX.</p>
+
+<ul>
+<li>
+<strong>Issues:</strong> <a href="https://github.com/mycila/xmltool/issues">https://github.com/mycila/xmltool/issues</a>
+</li>
+<li>
+<strong>OSGI Compliant:</strong> <img width="100px" src="http://www.sonatype.com/system/images/W1siZiIsIjIwMTMvMDQvMTIvMTEvNDAvMzcvMTgzL05leHVzX0ZlYXR1cmVfTWF0cml4X29zZ2lfbG9nby5wbmciXV0/Nexus-Feature-Matrix-osgi-logo.png" title="OSGI Compliant">
+</li>
+<li>
+<strong>Build Status:</strong> <a href="https://travis-ci.org/mycila/xmltool"><img src="https://travis-ci.org/mycila/xmltool.png?branch=master" alt="Build Status"></a>
+</li>
+</ul><h2>
+<a name="maven-repository" class="anchor" href="#maven-repository"><span class="octicon octicon-link"></span></a>Maven Repository</h2>
+
+<ul>
+<li>
+<strong>Releases</strong> </li>
+</ul><p>Available in Maven Central Repository: <a href="http://repo1.maven.org/maven2/com/mycila/xmltool/">http://repo1.maven.org/maven2/com/mycila/xmltool/</a></p>
+
+<ul>
+<li><strong>Snapshots</strong></li>
+</ul><p>Available in OSS Repository:  <a href="https://oss.sonatype.org/content/repositories/snapshots/com/mycila/xmltool/">https://oss.sonatype.org/content/repositories/snapshots/com/mycila/xmltool/</a></p>
+
+<p><strong>Maven dependency</strong></p>
+
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;com.mycila&lt;/groupId&gt;
+    &lt;artifactId&gt;mycila-jmx&lt;/artifactId&gt;
+    &lt;version&gt;X.Y.ga&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<h2>
+<a name="documentation" class="anchor" href="#documentation"><span class="octicon octicon-link"></span></a>Documentation</h2>
+
+<p>== XML Tool Overview ==</p>
+
+<p>XMLTool is a very simple Java library to be able to do all sorts of common operations with an XML document. As a Java developer, I often end up writing the always the same code for processing XML, transforming, ... So i decided to put all in a very easy to use class using the Fluent Interface pattern to facilitate XML manipulations.</p>
+
+<p>{{{
+XMLTag tag = XMLDoc.newDocument(false)
+    .addDefaultNamespace("<a href="http://www.w3.org/2002/06/xhtml2/%22">http://www.w3.org/2002/06/xhtml2/"</a>)
+    .addNamespace("wicket", "<a href="http://wicket.sourceforge.net/wicket-1.0%22">http://wicket.sourceforge.net/wicket-1.0"</a>)
+    .addRoot("html")
+    .addTag("wicket:border")
+    .gotoRoot().addTag("head")
+    .addNamespace("other", "<a href="http://other-ns.com%22">http://other-ns.com"</a>)
+    .gotoRoot().addTag("other:foo");
+System.out.println(tag.toString());
+}}}</p>
+
+<p></p>
+
+<p>== Features ==</p>
+
+<p>With XML Tool you will be able to quickly:</p>
+
+<ul>
+<li>Create new XML documents from external sources or new document from scrash</li>
+<li>Manage namespaces</li>
+<li>Manipulating nodes (add, remove, rename)</li>
+<li>Manipulating data (add, remove text or CDATA)</li>
+<li>Navigate into the document with shortcuts and XPath (note: XPath supports namespaces)</li>
+<li>Tranform an XMlDoc instance to a String or a Document</li>
+<li>Validate your document against schemas</li>
+<li>Executin callbacks on a hierarchy</li>
+<li>Remove all namspaces (namespace ignoring)</li>
+<li>... and a lot of other features !</li>
+</ul><p>== Download =</p>
+
+<p>You can download XML Tool versions:</p>
+
+<ul>
+<li>from the project [<a href="http://code.google.com/p/xmltool/downloads/list">http://code.google.com/p/xmltool/downloads/list</a> download page]</li>
+<li>from our [<a href="http://code.google.com/p/mc-repo/">http://code.google.com/p/mc-repo/</a> Alternate Maven Repository]</li>
+<li>from the [<a href="http://repo1.maven.org/maven2/com/mycila">http://repo1.maven.org/maven2/com/mycila</a> central maven repository] automatically sync from our alternate repository)</li>
+</ul><p>{{{
+com.mycila.xmltoolxmltoolX.Y
+}}}</p>
+
+<p>== Manual ==</p>
+
+<p>Please see <em>Featured Wiki Pages</em> (on the right) for more information. I strongly suggest you also [<a href="http://code.google.com/p/xmltool/source/checkout">http://code.google.com/p/xmltool/source/checkout</a> checkout] the source to see all the exemples in the unit tests, as you read the [<a href="http://code.google.com/p/xmltool/wiki/Manual">http://code.google.com/p/xmltool/wiki/Manual</a> Manual].</p>
+
+<p>== Quick sample ==</p>
+
+<p>Check the Manual for samples. You can also check in the [<a href="http://code.google.com/p/maven-license-plugin/">http://code.google.com/p/maven-license-plugin/</a> Maven License Plugin project] when we load the [<a href="http://maven-license-plugin.googlecode.com/svn/trunk/src/main/java/com/google/code/mojo/license/header/AdditionalHeaderDefinition.java">http://maven-license-plugin.googlecode.com/svn/trunk/src/main/java/com/google/code/mojo/license/header/AdditionalHeaderDefinition.java</a> additional header definition file]</p>
+
+<p>== Evolution - Participate ! ==</p>
+
+<p>If you think of useful methods to add, please post an <em>issue</em> so that we implement it.</p>
+
+<p>== Other interesting projects ==</p>
+
+<ul>
+<li>Mycila: <a href="http://code.mycila.com/">http://code.mycila.com/</a>
+</li>
+</ul><p></p>
+
+<h1>
+<a name="summary-xml-tool-manual" class="anchor" href="#summary-xml-tool-manual"><span class="octicon octicon-link"></span></a>summary XML Tool Manual</h1>
+
+<p></p>
+
+<p>== Creating XML documents ==</p>
+
+<p>=== Creating a new XML document ===</p>
+
+<p>The <em>newDocument</em> method crate a new XML document. You then have to choose a default namespace if you want and then choose the root name of the document.</p>
+
+<p>{{{
+System.out.println(XMLDoc.newDocument(true).addRoot("html").toString());
+}}}</p>
+
+<p>gives:</p>
+
+<p>{{{
+&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+</p>
+}}}
+
+<p>=== Loading an existing XML document ===</p>
+
+<p>The <em>from</em> methods can load an XML document from any of the following types:</p>
+
+<ul>
+<li>org.w3c.dom.Node</li>
+<li>InputSource</li>
+<li>Reader</li>
+<li>InputStream</li>
+<li>File</li>
+<li>URL</li>
+<li>String</li>
+<li>javax.xml.transform.Source</li>
+</ul><p><em>Example:</em></p>
+
+<p>{{{
+URL yahooGeoCode = new URL("<a href="http://local.yahooapis.com/MapsService/V1/geocode?appid=YD-9G7bey8_JXxQP6rxl.fBFGgCdNjoDMACQA--&amp;state=QC&amp;country=CA&amp;zip=H1W3B8%22">http://local.yahooapis.com/MapsService/V1/geocode?appid=YD-9G7bey8_JXxQP6rxl.fBFGgCdNjoDMACQA--&amp;state=QC&amp;country=CA&amp;zip=H1W3B8"</a>);
+System.out.println(XMLDoc.from(yahooGeoCode, true).toString());
+System.out.println(XMLDoc.from(yahooGeoCode, true).getText("Result/City"));
+}}}</p>
+
+<p>outputs:</p>
+
+<p>{{{
+&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+45.543289-73.543098 
+    MontrealQCH1W 3B8CA</p>
+
+
+
+<p>Montreal
+}}}</p>
+
+<p>=== Ignoring namespaces ===</p>
+
+<p>All creational methods <em>XMLDoc.newDocument</em> and <em>XMLDoc.from</em> requires a boolean attribute <em>ignoreNamespaces</em>. If this attribute is set to true, all namespaces in the document are ignored. This is really useful if you use XPath a lot since you can avoid prefixing all your XPath elements.</p>
+
+<p><em>Example:</em></p>
+
+<p>{{{
+System.out.println(XMLDoc.newDocument(true)
+    .addDefaultNamespace("<a href="http://www.w3.org/2002/06/xhtml2/%22">http://www.w3.org/2002/06/xhtml2/"</a>)
+    .addRoot("html"));
+System.out.println(XMLDoc.newDocument(false)
+    .addDefaultNamespace("<a href="http://www.w3.org/2002/06/xhtml2/%22">http://www.w3.org/2002/06/xhtml2/"</a>)
+    .addRoot("html"));
+}}}</p>
+
+<p>outputs:</p>
+
+<p>{{{
+&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+</p>
+
+<p>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+</p>
+}}}
+
+<p>Navigating in a document with namespaces using XPath is quite a pain:</p>
+
+<p>{{{
+doc.gotoTag("ns0:body").addTag("child")
+   .gotoParent().addCDATA("with special characters")
+   .gotoTag("ns0:body").addCDATA("&lt;\"!@#$%'^&amp;*()&gt;")
+}}}</p>
+
+<p>whereas if you load the same document with <em>ignoreNamespaces</em>, you can simply navigate like this when you use XPath:</p>
+
+<p>{{{
+doc.gotoTag("body").addTag("child")
+   .gotoParent().addCDATA("with special characters")
+   .gotoTag("body").addCDATA("&lt;\"!@#$%'^&amp;*()&gt;")
+}}}</p>
+
+<p>== Using namespaces ==</p>
+
+<p>When you create or load a document, and if you decide to not ignore namespaces, you can add a default namespace for your document and add other ones after. Namespace management is quite a challenge, specifically when using XPath (see <code>Navigate into XMLTag</code> section). When you have an XMLTag instance, you have access to the following methods to manage namespaces in the document:</p>
+
+<p>=== Adding and retrieving namespaces and prefixes ===</p>
+
+<p><em>addDefaultNamespace</em></p>
+
+<p>When you create an empty document, you can define a default namespace to use for the document. In example:</p>
+
+<p>{{{
+XMLTag doc = XMLDoc.newDocument()
+    .addDefaultNamespace("<a href="http://www.w3.org/2002/06/xhtml2/%22">http://www.w3.org/2002/06/xhtml2/"</a>)
+    .addRoot("html");
+}}}</p>
+
+<p>will produce:</p>
+
+<p>{{{
+&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+</p>
+}}}
+
+<p><em>addNamespace</em></p>
+
+<p>When you obtained an XMLTag instance, you can add any namespace you want. In example:</p>
+
+<p>{{{
+XMLTag doc = XMLDoc.newDocument()
+    .addDefaultNamespace("<a href="http://www.w3.org/2002/06/xhtml2/%22">http://www.w3.org/2002/06/xhtml2/"</a>)
+    .addNamespace("wicket", "<a href="http://wicket.sourceforge.net/wicket-1.0%22">http://wicket.sourceforge.net/wicket-1.0"</a>)
+    .addRoot("html")
+    .addTag("wicket:border")
+    .gotoRoot().addTag("head")
+    .addNamespace("other", "<a href="http://other-ns.com%22">http://other-ns.com"</a>)
+    .gotoRoot().addTag("other:foo");
+}}}</p>
+
+<p>will produce:</p>
+
+<p>{{{
+&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+
+    </p>
+    <div></div>
+    <div></div>
+    <div></div>
+
+
+}}}
+
+<p><em>hasAttribute</em></p>
+
+<p>Check for the existence of an attribute.</p>
+
+<p><em>getAttributeNames</em></p>
+
+<p>Returns a list of attribute names of the current tag.</p>
+
+<p>{{{
+String[] names = XMLDoc.from(resource("test.xhtml"), true)
+        .gotoTag("body/div[1]")
+        .getAttributeNames();
+System.out.println(Arrays.toString(names));
+}}}</p>
+
+<p>outputs:</p>
+
+<p>{{{
+[class, id]
+}}}</p>
+
+<p><em>getAttribute</em></p>
+
+<p>Returns an attribute value of the current tag or the selected tag by the XPath expression. If the attribute does not exist, throws an exception.</p>
+
+<p>{{{
+System.out.println(XMLDoc.from(resource("test.xhtml"), true)
+        .gotoTag("body/div[1]")
+        .getAttribute("class"));
+System.out.println(XMLDoc.from(resource("test.xhtml"), true)
+        .getAttribute("class", "body/div[2]"));
+}}}</p>
+
+<p>outputs:</p>
+
+<p>{{{
+banner
+cool
+}}}</p>
+
+<p><em>deleteAttributes</em></p>
+
+<p>Deletes all attributes of a the current tag.</p>
+
+<p>{{{
+System.out.println(XMLDoc.from(resource("test.xhtml"), true)
+    .gotoTag("body/div[1]")
+    .deleteAttributes()
+    .toString());
+}}}</p>
+
+<p>{{{
+&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+
+</p>
+    my title<div></div>
+    <div></div>
+    <div></div>
+
+
+}}}
+
+<p><em>deleteAttribute</em></p>
+
+<p>Deletes a specific attribute. If it does not exist, an exception is thrown.</p>
+
+<p>{{{
+System.out.println(XMLDoc.from(getClass().getResource("/test.xhtml"), true)
+        .hasAttribute("id", "body/div[1]"));
+System.out.println(XMLDoc.from(getClass().getResource("/test.xhtml"), true)
+        .gotoTag("body/div[1]").deleteAttribute("id")
+        .hasAttribute("id"));
+}}}</p>
+
+<p>{{{
+true
+false
+}}}</p>
+
+<p>=== On text and data ===</p>
+
+<p>Operations affecting elements: <em>addText</em>, <em>addCDATA</em>, <em>getAttribute</em>, <em>deleteAttributes</em>, <em>deleteAttribute</em></p>
+
+<p><em>addText</em>
+<em>addCDATA</em></p>
+
+<p>Adds text or CDATA sections to the document. As you have seen above, you can mix text, data and tags under one tag. When we add text or data, the current tag automatically becomes the parent tag. This behavior facilitate document creation since most of the time you will have to add one text or one data per tag like this:</p>
+
+<p>{{{
+System.out.println(XMLDoc.newDocument(true)
+    .addRoot("html")
+    .addTag("head").addText("&lt;\"!@#$%'^&amp;*()&gt;")
+    .addTag("body").addCDATA("&lt;\"!@#$%'^&amp;*()&gt;")
+    .toString());
+}}}</p>
+
+<p>which gives:</p>
+
+<p>{{{
+&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+
+    </p>&lt;"!@#$%'^&amp;*()&gt;
+    &lt;![CDATA[&lt;"!@#$%'^&amp;*()&gt;]]&gt;
+
+}}}
+
+<p><em>getText</em>
+<em>getCDATA</em></p>
+
+<p>Returns the text or data contained in the current tag or the targetted tag with the XPath expression. If the tag has no text, returns "".</p>
+
+<p>Given:</p>
+
+<p>{{{
+&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+
+    </p>
+        my special title: &lt;"!@#$%'^&amp;*()&gt;
+        &lt;![CDATA[my special data: ]]&gt;
+        <a>ns0:border</a>
+            <div></div>
+            child1
+        <a href="/ns0:border">/ns0:border</a>
+        <a>ns0:border</a>child2<a href="/ns0:border">/ns0:border</a>
+        &lt;![CDATA[&lt;"!@#$%'^&amp;*()&gt;]]&gt;
+        <a>ns0:border</a>child3<a href="/ns0:border">/ns0:border</a>
+    
+
+}}}
+
+<p>The following assertions are true:</p>
+
+<p>{{{
+assertEquals(doc.getCurrentTag().getNodeType(), Document.ELEMENT_NODE);
+assertEquals(doc.getCurrentTagName(), "html");
+assertEquals(doc.getCurrentTagName(), "html");
+assertEquals(doc.getPefix("<a href="http://www.w3.org/2002/06/xhtml2/%22">http://www.w3.org/2002/06/xhtml2/"</a>), "ns1"); // ns0 is already used in the document
+assertEquals(doc.gotoTag("ns1:head/ns1:title").getText(), "my special title: &lt;\"!@#$%'^&amp;*()&gt;");
+assertEquals(doc.getText("."), "my special title: &lt;\"!@#$%'^&amp;*()&gt;");
+assertEquals(doc.getCDATA("../../ns1:body"), "my special data: &lt;\"!@#$%'^&amp;*()&gt;");
+assertEquals(doc.getAttribute("ns0:id"), "titleID");
+}}}</p>
+
+<p>NB: we loaded the document by not ignorign namespaces. That's why you see required ns prefixes in XPath expressions.</p>
+
+<p>== Navigation, XPath and Callback support ==</p>
+
+<p>=== Raw XPath ===</p>
+
+<p>You can execute RAW XPath directly through Java Xpath API by using <em>rawXpath</em> methods:</p>
+
+<ul>
+<li>Boolan XMLTag.rawXpathBoolean(...)</li>
+<li>Number XMLTag.rawXpathNumber(...)</li>
+<li>String XMLTag.rawXpathString(...)</li>
+<li>Node XMLTag.rawXpathNode(...)</li>
+<li>NodeList XMLTag.rawXpathNodeSet(...)</li>
+</ul><p>[<a href="http://code.google.com/p/xmltool/source/browse/trunk/src/test/java/com/google/code/xmltool/XMLDocXPathTest.java">http://code.google.com/p/xmltool/source/browse/trunk/src/test/java/com/google/code/xmltool/XMLDocXPathTest.java</a> Example here]</p>
+
+<p>=== Gotos ===</p>
+
+<p>Navigation in the document is achieved by <em>gotos</em> methods</p>
+
+<p><em>gotoParent</em></p>
+
+<p>Returns to the parent tag, or remain to the root tag if we are already in the root tag.</p>
+
+<p><em>gotoRoot</em></p>
+
+<p>As it says, goes to the root tag.</p>
+
+<p><em>gotoChild</em></p>
+
+<p>Goes to the only existing child of a tag. It is just a useful method to traverse XML document from child to child when there are only one child per element. If you call this method when you are in a tag that does not contain exactly one child element, the method will throw an exception.</p>
+
+<p><em>gotoChild(int i)</em></p>
+
+<p>Goes to the Nth child of the current element. Index is from 1 up to <code>child number</code>, exactly like XPath array selection (child[i]) If the child at given position does not exist, an exception is thrown.</p>
+
+<p><em>gotoChild(String name)</em></p>
+
+<p>Goes to to the unique existing child element having given name. If there is no child with this name, or if there are more than one, an exception will be thrown.</p>
+
+<p><em>gotoTag(String relativeXpath, Object... arguments)</em></p>
+
+<p>Goes to to a tag element given an XPath expression. <code>arguments</code> is useful to parametrize the XPath expression with namespace prefixes for example. It uses String.format(). Remember when using XPath on a document with namespaces, you must always use prefixes even when the document has a default namespace.</p>
+
+<p><em>Example:</em></p>
+
+<p>Given:</p>
+
+<p>{{{
+&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+
+    </p>
+        <div></div>
+            child1
+        <a href="/w:border">/w:border</a>
+        child2<a href="/w:border">/w:border</a>
+        child3<a href="/w:border">/w:border</a>
+    
+
+}}}
+
+<p>We can browse the above document like this:</p>
+
+<p>{{{
+XMLTag doc = XMLDoc.from(getClass().getResource("/goto.xml"), false);
+        String ns = doc.getPefix("<a href="http://www.w3.org/2002/06/xhtml2/%22">http://www.w3.org/2002/06/xhtml2/"</a>);
+        doc.gotoChild("head")      // jump to the only 'head' tag under 'html'
+                .gotoChild()       // jump to the only child of 'head'
+                .gotoRoot()        // go to 'html'
+                .gotoChild(2)      // go to child 'body'
+                .gotoChild(3)      // go to third child 'w:border' having text 'child3'
+                .gotoRoot()        // return to root
+                .gotoTag("%1$s:body/w:border[1]/%1$s:div", ns); // xpath navigation with namespace
+}}}</p>
+
+<p>Notice the Xpath expression when we use namespace: as we load an existing document, we can get generated prefix for a namespace with the <code>getPrefix</code> method. Then we can use this generated prefix in our XPath. <code>%1$s</code> means that we take the first argument provided (see String.format() documentation). If you debug, you will see that the XPath expression is <code>ns0:body/w:border[1]/ns0:div</code>.</p>
+
+<p>=== Callbacks on selected nodes ===</p>
+
+<p>Callbacks: <em>forEach</em>, <em>forEachChilds</em></p>
+
+<p>XMLTool enables you to execute callback actions for each node selected or each child nodes.</p>
+
+<p><em>Example:</em></p>
+
+<p>If we take back the XHTML example:</p>
+
+<p>{{{
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "<a href="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd%22%3E">http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;</a>
+
+</p>
+    my title<div></div>
+    <div></div>
+    <div></div>
+
+
+}}}
+
+<p>And we execute:</p>
+
+<p>{{{
+XMLDoc.from(getClass().getResource("/test.xhtml"), true).forEachChild(new CallBack() {
+    public void execute(XMLTag doc) {
+        System.out.println(doc.getCurrentTagName());
+    }
+});
+XMLDoc.from(getClass().getResource("/test.xhtml"), true).forEach(new CallBack() {
+    public void execute(XMLTag doc) {
+        System.out.println(doc.getAttribute("id"));
+    }
+}, "//div");
+}}}</p>
+
+<p>We obtain:</p>
+
+<p>{{{
+head
+body
+header
+content
+footer
+}}}</p>
+
+<p>== Converting your XML document ==</p>
+
+<p>Document conversion is done through <code>to*</code> methods.</p>
+
+<p><em>toDocument</em></p>
+
+<p>Converts to an org.w3c.dom.Document instance.</p>
+
+<p><em>toString</em>
+<em>toString(String encoding)</em></p>
+
+<p>Converts to a formatted string, optionally giving an encoding. </p>
+
+<p><em>toBytes</em></p>
+
+<p>Convert to a byte array</p>
+
+<p><em>toResult</em>, <em>toStream</em></p>
+
+<p>Converts to streams. </p>
+
+<p><em>Example:</em></p>
+
+<p>{{{
+XMLDoc.newDocument(true).addRoot("html")
+    .toResult(new DOMResult())
+    .toStream(new StringWriter())
+    .toStream(new ByteArrayOutputStream());
+}}}</p>
+
+<p>== Validating your XML document ==</p>
+
+<p>XML validation enables to validate current document against a shema. Of course, to use this functionnality you need to create a document that does not ignore namespaces.</p>
+
+<p><em>validate</em></p>
+
+<p>This method is used to validate the document against schemas. It returns a ValidationResult instance containing all warning and error issued during validation.</p>
+
+<p><em>Example:</em></p>
+
+<p>{{{
+&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
+
+    </p>
+        <div></div>
+            child1
+        <a href="/w:border">/w:border</a>
+        child2<a href="/w:border">/w:border</a>
+        child3<a href="/w:border">/w:border</a>
+    
+
+}}}
+
+<ul>
+<li>Namespace <a href="http://www.w3.org/2002/06/xhtml2/">http://www.w3.org/2002/06/xhtml2/</a> is defined in schema <a href="http://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd">http://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd</a>
+</li>
+<li>Namespace <a href="http://wicket.sourceforge.net/wicket-1.0">http://wicket.sourceforge.net/wicket-1.0</a> is defined in schema <a href="http://wicket.sourceforge.net/wicket-1.0.xsd">http://wicket.sourceforge.net/wicket-1.0.xsd</a>
+</li>
+</ul><p>If we validate the XML document goto.xml seen above:</p>
+
+<p>{{{
+ValidationResult results = XMLDoc.from(getClass().getResource("/goto.xml")).validate(
+        new URL("<a href="http://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd%22">http://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd"</a>),
+        new URL("<a href="http://wicket.sourceforge.net/wicket-1.0.xsd%22">http://wicket.sourceforge.net/wicket-1.0.xsd"</a>)
+);
+assertFalse(results.hasError());
+}}}</p>
+
+<p>If we validate the following document created by us below:</p>
+
+<p>{{{
+results = XMLDoc.newDocument()
+        .addDefaultNamespace("<a href="http://www.w3.org/2002/06/xhtml2/%22">http://www.w3.org/2002/06/xhtml2/"</a>)
+        .addRoot("htmlZZ")
+        .validate(new URL("<a href="http://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd%22)">http://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd")</a>);
+assertTrue(results.hasError());
+System.out.println(Arrays.deepToString(results.getErrorMessages()));
+}}}</p>
+
+<p>The output is:</p>
+
+<p><code>[cvc-elt.1: Cannot find the declaration of element 'htmlxxx'.]</code></p>
+
+<p>== Exception handling ==</p>
+
+<p>Each operation causing an exception throws a XMLDocumentException with a described message.</p>
+
+<p>== Evolution, other methods ==</p>
+
+<p>The library keep evolving and has other severals methods like clone(), copy constructors, adding XMLTag in another XMLTag (either from the current tag or either add the whole documenent), ...</p>
+
+<p><em>2009-03-04</em>
+XMLTag XMLDoc.fromCurrentTag(XMLTag tag, boolean ignoreNamespaces);
+XMLTag tag.getInnerDocument();
+String tag.getInnerText();</p>
+
+<p><a href="http://githalytics.com/mycila/xmltool"><img src="https://cruel-carlota.pagodabox.com/60f4da90933fb3bd1120d33f01be65e6" alt="githalytics.com alpha" title="githalytics.com"></a></p>
+        </section>
+
+        <footer>
+          Mycila XML Tool is maintained by <a href="https://github.com/mycila">mycila</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+                  <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-5669052-12");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+      </div>
+    </div>
+  </body>
+</html>
