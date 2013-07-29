@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<html xmlns="http://www.w3.org/2002/06/xhtml2/" xmlns:ns0="http://wicket.sourceforge.net/wicket-1.0" a="1">
+    <head  a="1">
+        <title ns0:id="titleID">my special title: &lt;"!@#$%'^&amp;*()&gt;</title>
+    </head>
+    <body>
+        <![CDATA[my special data: ]]>
+        <ns0:border>
+            <div/>
+            child1
+        </ns0:border>
+        <ns0:border>child2</ns0:border>
+        <![CDATA[<"!@#$%'^&*()>]]>
+        <ns0:border>child3</ns0:border>
+    </body>
+</html>

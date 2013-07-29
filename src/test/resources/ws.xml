@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<html xmlns:s="aaa" xmlns:p="bbb">
+    <s:head/>
+    <s:body>
+        <p:data>
+            <state>true</state>
+        </p:data>
+    </s:body>
+</html>

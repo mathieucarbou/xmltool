@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<a xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <b>
+        <b1>123</b1>
+        <b2>
+            <c1>456</c1>
+            <dob xsi:nil="true"/>
+        </b2>
+    </b>
+    <b>
+        <b1>123</b1>
+    </b>
+    <b>
+        <c1>456</c1>
+    </b>
+</a>

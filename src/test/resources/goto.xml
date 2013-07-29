@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<html xmlns="http://www.w3.org/2002/06/xhtml2/" xmlns:w="http://wicket.sourceforge.net/wicket-1.0">
+    <head>
+        <title w:id="title"/>
+    </head>
+    <body>
+        <w:border>
+            <div/>
+            child1
+        </w:border>
+        <w:border>child2</w:border>
+        <w:border>child3</w:border>
+    </body>
+</html>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<a>
+    <b>
+        <c a="b">test</c>
+    </b>
+    <b>
+        test
+        <c a="b"><d>test</d></c>
+        <c a="b">test</c>
+    </b>
+    <b/>
+    <b>
+        <c/>
+    </b>
+    <b>
+        test2
+    </b>
+</a>

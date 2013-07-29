@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO8859-1" standalone="yes"?>
+<html xmlns="http://ns3.com">
+    <ns0:head xmlns:ns0="http://ns2.com">
+        <title>my title</title>
+    </ns0:head>
+    <ns1:body xmlns:ns1="http://ns1.com">
+        <ns1:div><![CDATA[data section]]></ns1:div>
+    </ns1:body>
+    <other>
+        <text><cool1/></text>
+        <text><cool2/></text>
+        <text><cool3/></text>
+        <text>cool1</text>
+        <text>cool2</text>
+    </other>
+</html>

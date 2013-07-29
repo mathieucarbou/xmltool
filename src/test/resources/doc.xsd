@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:foo="http://foo"
+        targetNamespace="http://foo"
+        elementFormDefault="qualified">
+
+    <element name="root" type="foo:Root"/>
+
+    <complexType name="Root">
+        <all>
+            <element name="id" type="string"/>
+            <element name="html" type="foo:Html"/>
+        </all>
+    </complexType>
+
+    <complexType name="Html">
+        <sequence>
+            <element name="title" type="string"/>
+        </sequence>
+    </complexType>
+
+</schema>
