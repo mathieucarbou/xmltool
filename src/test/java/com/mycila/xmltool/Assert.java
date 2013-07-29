@@ -16,11 +16,11 @@
 
 package com.mycila.xmltool;
 
-import static org.testng.Assert.*;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
+
 import static java.lang.String.format;
+import static org.junit.Assert.fail;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

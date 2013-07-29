@@ -16,9 +16,7 @@
 
 package com.mycila.xmltool;
 
-import static com.mycila.xmltool.Assert.*;
-import static org.testng.Assert.*;
-import org.testng.annotations.Test;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -31,6 +29,12 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.Arrays;
+
+import static com.mycila.xmltool.Assert.Code;
+import static com.mycila.xmltool.Assert.assertThrow;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

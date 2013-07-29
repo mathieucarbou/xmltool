@@ -16,10 +16,13 @@
 
 package com.mycila.xmltool;
 
-import static org.testng.Assert.*;
-import org.testng.annotations.Test;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.util.Arrays;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -43,7 +46,9 @@ public final class XMLDocValidatorTest extends AbstractTest {
         System.out.println(Arrays.deepToString(res.getErrorMessages()));
     }
 
-    @Test(enabled = false) //when we ignore namespace, validation becomes unpredictable on diffrent jdk versions
+    @Test
+    @Ignore
+    //when we ignore namespace, validation becomes unpredictable on diffrent jdk versions
     public void validate_URL_ignoringNS() throws Exception {
         XMLTag doc = XMLDoc.from(readString("doc2.xhtml"), true);
         ValidationResult res = Utils.validate(doc.toDocument(), getClass().getResource("/doc.xsd"));
@@ -52,7 +57,9 @@ public final class XMLDocValidatorTest extends AbstractTest {
         assertFalse(res.hasWarning());
     }
 
-    @Test(enabled = false) //when we ignore namespace, validation becomes unpredictable on diffrent jdk versions
+    @Test
+    @Ignore
+    //when we ignore namespace, validation becomes unpredictable on diffrent jdk versions
     public void validate_URL_invalid_ignoringNS() throws Exception {
         XMLTag doc = XMLDoc.from(readString("doc3.xhtml"), true);
         ValidationResult res = Utils.validate(doc.toDocument(), getClass().getResource("/doc.xsd"));

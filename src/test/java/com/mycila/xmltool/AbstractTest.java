@@ -16,7 +16,7 @@
 
 package com.mycila.xmltool;
 
-import org.testng.Assert;
+import org.junit.Assert;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;

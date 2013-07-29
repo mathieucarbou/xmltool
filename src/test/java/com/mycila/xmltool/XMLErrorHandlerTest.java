@@ -16,13 +16,17 @@
 
 package com.mycila.xmltool;
 
-import static com.mycila.xmltool.Assert.*;
-import static org.testng.Assert.*;
-import org.testng.annotations.Test;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import javax.xml.transform.TransformerException;
+
+import static com.mycila.xmltool.Assert.Code;
+import static com.mycila.xmltool.Assert.assertThrow;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)

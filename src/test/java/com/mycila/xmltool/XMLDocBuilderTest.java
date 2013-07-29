@@ -16,9 +16,7 @@
 
 package com.mycila.xmltool;
 
-import static com.mycila.xmltool.Assert.*;
-import static org.testng.Assert.*;
-import org.testng.annotations.Test;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -29,6 +27,12 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.StringReader;
 import java.util.Arrays;
+
+import static com.mycila.xmltool.Assert.assertThrow;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -97,7 +101,7 @@ public final class XMLDocBuilderTest extends AbstractTest {
 
     @Test
     public void test_from_malformed_source1() {
-        assertThrow(XMLDocumentException.class).withMessage("Error creating XMLDoc. Please verify that the input source can be read and is well formed: org.xml.sax.SAXParseException: XML document structures must start and end within the same entity.").whenRunning(new Assert.Code() {
+        assertThrow(XMLDocumentException.class).withMessage("Error creating XMLDoc. Please verify that the input source can be read and is well formed: org.xml.sax.SAXParseException; lineNumber: 1; columnNumber: 13; XML document structures must start and end within the same entity.").whenRunning(new Assert.Code() {
             public void run() throws Throwable {
                 XMLDocBuilder.from(new StreamSource(new StringReader("<html><html>")), false);
             }

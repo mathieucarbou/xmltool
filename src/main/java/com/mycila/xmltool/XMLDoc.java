@@ -56,8 +56,9 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static com.mycila.xmltool.Utils.*;
-import static javax.xml.XMLConstants.*;
+import static com.mycila.xmltool.Utils.notEmpty;
+import static com.mycila.xmltool.Utils.notNull;
+import static javax.xml.XMLConstants.XMLNS_ATTRIBUTE;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -965,6 +966,46 @@ public final class XMLDoc implements XMLTag {
     public static XMLTag from(XMLTag tag, boolean ignoreNamespaces) {
         notNull("XML Tag", tag);
         return XMLDocBuilder.from(tag, ignoreNamespaces);
+    }
+
+    public static XMLDocBuilder newDocument() {
+        return newDocument(true);
+    }
+
+    public static XMLTag from(Node node) {
+        return from(node, true);
+    }
+
+    public static XMLTag from(InputSource source) {
+        return from(source, true);
+    }
+
+    public static XMLTag from(Reader reader) {
+        return from(reader, true);
+    }
+
+    public static XMLTag from(InputStream is) {
+        return from(is, true);
+    }
+
+    public static XMLTag from(File file) {
+        return from(file, true);
+    }
+
+    public static XMLTag from(URL xmlLocation) {
+        return from(xmlLocation, true);
+    }
+
+    public static XMLTag from(String xmlData) {
+        return from(xmlData, true);
+    }
+
+    public static XMLTag from(Source source) {
+        return from(source, true);
+    }
+
+    public static XMLTag from(XMLTag tag) {
+        return from(tag, true);
     }
 
     /**

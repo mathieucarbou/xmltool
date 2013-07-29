@@ -16,9 +16,8 @@
 
 package com.mycila.xmltool;
 
-import static com.mycila.xmltool.Assert.*;
-import static org.testng.Assert.*;
-import org.testng.annotations.Test;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -35,6 +34,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
+import static com.mycila.xmltool.Assert.Code;
+import static com.mycila.xmltool.Assert.assertThrow;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -992,7 +997,7 @@ public final class XMLDocNoNamespaceTest extends AbstractTest {
         assertEquals(doc.getAttributeNames()[0], "a");
         assertEquals(doc.getAttributeNames()[1], "c");
         assertEquals(doc.getAttributeNames()[2], "e");
-        assertEquals(doc.toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<html a=\"b\" c=\"d\" e=\"f\"/>\n");
+        assertEquals(doc.toString().replace("\r", ""), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<html a=\"b\" c=\"d\" e=\"f\"/>\n");
     }
 
     @Test
@@ -1135,7 +1140,7 @@ public final class XMLDocNoNamespaceTest extends AbstractTest {
             }
         }, "b");
 
-        assertEquals(XMLDoc.from("<root/>", true).duplicate().toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<root/>\n");
+        assertEquals(XMLDoc.from("<root/>", true).duplicate().toString().replace("\r", ""), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<root/>\n");
     }
 
     @Test
@@ -1208,6 +1213,7 @@ public final class XMLDocNoNamespaceTest extends AbstractTest {
     }
 
     @Test
+    @Ignore
     public void test_yahoo() throws Exception {
         URL yahooGeoCode = new URL("http://local.yahooapis.com/MapsService/V1/geocode?appid=YD-9G7bey8_JXxQP6rxl.fBFGgCdNjoDMACQA--&state=QC&country=CA&zip=H1W3B8");
         System.out.println(XMLDoc.from(yahooGeoCode, true).toString());
