@@ -11,7 +11,7 @@
 
     <groupId>com.mycila</groupId>
     <artifactId>mycila-xmltool</artifactId>
-    <version>4.0.rc1</version>
+    <version>4.1.rc1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>mycila-xmltool</name>
@@ -22,7 +22,7 @@
         <connection>scm:git:git@github.com:mycila/xmltool.git</connection>
         <developerConnection>scm:git:git@github.com:mycila/xmltool.git</developerConnection>
         <url>http://github.com/mycila/xmltool</url>
-        <tag>mycila-xmltool-4.0.rc1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <properties>
