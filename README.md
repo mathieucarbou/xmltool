@@ -683,5 +683,4 @@ The output is:
 
 Each operation causing an exception throws a XMLDocumentException with a described message.
 
-
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/60f4da90933fb3bd1120d33f01be65e6 "githalytics.com")](http://githalytics.com/mycila/xmltool)
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/c89084a008d60a2378ce0b480d883d8e "githalytics.com")](http://githalytics.com/mycila/xmltool)
