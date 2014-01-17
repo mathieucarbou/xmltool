@@ -115,7 +115,7 @@ public final class XMLDocBuilder {
 
     static XMLDocBuilder newDocument(boolean ignoreNamespaces) {
         return new XMLDocBuilder(new XMLDocDefinition(
-                newDocumentBuilder(ignoreNamespaces).newDocument(),
+                XMLDocumentBuilderFactory.newDocumentBuilder(ignoreNamespaces).newDocument(),
                 ignoreNamespaces));
     }
 
@@ -158,7 +158,7 @@ public final class XMLDocBuilder {
 
     static XMLTag from(InputSource source, boolean ignoreNamespaces) {
         try {
-            return from(newDocumentBuilder(ignoreNamespaces).parse(source), ignoreNamespaces);
+            return from(XMLDocumentBuilderFactory.newDocumentBuilder(ignoreNamespaces).parse(source), ignoreNamespaces);
         }
         catch (Exception e) {
             throw new XMLDocumentException("Error creating XMLDoc. Please verify that the input source can be read and is well formed", e);
@@ -170,13 +170,13 @@ public final class XMLDocBuilder {
     }
 
     static XMLTag from(XMLTag tag, boolean ignoreNamespaces) {
-        Document newDoc = newDocumentBuilder(ignoreNamespaces).newDocument();
+        Document newDoc = XMLDocumentBuilderFactory.newDocumentBuilder(ignoreNamespaces).newDocument();
         newDoc.appendChild(newDoc.importNode(tag.toDocument().getDocumentElement(), true));
         return from(newDoc, ignoreNamespaces);
     }
 
     static XMLTag fromCurrentTag(XMLTag tag, boolean ignoreNamespaces) {
-        Document newDoc = newDocumentBuilder(ignoreNamespaces).newDocument();
+        Document newDoc = XMLDocumentBuilderFactory.newDocumentBuilder(ignoreNamespaces).newDocument();
         newDoc.appendChild(newDoc.importNode(tag.getCurrentTag(), true));
         return from(newDoc, ignoreNamespaces);
     }
@@ -198,20 +198,6 @@ public final class XMLDocBuilder {
             c.close();
         }
         catch (IOException ignored) {
-        }
-    }
-
-    private static DocumentBuilder newDocumentBuilder(boolean ignoreNamespaces) {
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            factory.setNamespaceAware(!ignoreNamespaces);
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            builder.setErrorHandler(new XMLErrorHandler(true));
-            builder.setEntityResolver(CachedEntityResolver.instance);
-            return builder;
-        }
-        catch (ParserConfigurationException e) {
-            throw new IllegalStateException(e.getMessage(), e);
         }
     }
 
