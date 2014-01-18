@@ -38,12 +38,14 @@ import static javax.xml.xpath.XPathConstants.STRING;
  */
 final class XMLDocPath {
 
+    private static final XPathFactory XPATH_FACTORY = XPathFactory.newInstance();
+
     private final XPath xpath;
     private final Map<String, XPathExpression> compiled = new SoftHashMap<String, XPathExpression>();
 
     XMLDocPath(XMLDocDefinition context) {
         try {
-            xpath = XPathFactory.newInstance().newXPath();
+            xpath = XPATH_FACTORY.newXPath();
             xpath.setNamespaceContext(context);
         }
         catch (Exception e) {
