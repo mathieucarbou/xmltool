@@ -23,11 +23,7 @@ import org.xml.sax.InputSource;
 import javax.xml.XMLConstants;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,9 +32,7 @@ import java.util.List;
 
 import static com.mycila.xmltool.Assert.Code;
 import static com.mycila.xmltool.Assert.assertThrow;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -648,7 +642,7 @@ public final class XMLDocNoNamespaceTest extends AbstractTest {
 
     @Test
     public void test_gotoNode_bad_xpath() {
-        assertThrow(XMLDocumentException.class).withMessage("Error compiling xpath ':-)': A location path was expected, but the following token was encountered:  :-").whenRunning(new Code() {
+        assertThrow(XMLDocumentException.class).withMessage("Error compiling xpath ':-)' - A location path was expected, but the following token was encountered:  :-").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLDoc.newDocument(true).addRoot("html").gotoTag(":-)");
             }

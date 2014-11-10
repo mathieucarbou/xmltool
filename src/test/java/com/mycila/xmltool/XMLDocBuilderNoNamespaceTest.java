@@ -29,9 +29,7 @@ import java.util.Arrays;
 
 import static com.mycila.xmltool.Assert.Code;
 import static com.mycila.xmltool.Assert.assertThrow;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -87,7 +85,7 @@ public final class XMLDocBuilderNoNamespaceTest extends AbstractTest {
 
     @Test
     public void test_from_malformed_source1() {
-        assertThrow(XMLDocumentException.class).withMessage("Error creating XMLDoc. Please verify that the input source can be read and is well formed: org.xml.sax.SAXParseException; lineNumber: 1; columnNumber: 13; XML document structures must start and end within the same entity.").whenRunning(new Code() {
+        assertThrow(XMLDocumentException.class).withMessage("Error creating XMLDoc. Please verify that the input source can be read and is well formed - org.xml.sax.SAXParseException; lineNumber: 1; columnNumber: 13; XML document structures must start and end within the same entity.").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLDocBuilder.from(new StreamSource(new StringReader("<html><html>")), true);
             }
@@ -131,7 +129,7 @@ public final class XMLDocBuilderNoNamespaceTest extends AbstractTest {
 
     @Test
     public void test_from_malformed() {
-        assertThrow(XMLDocumentException.class).withMessage("Error creating XMLDoc. Please verify that the input source can be read and is well formed: XML document structures must start and end within the same entity.").whenRunning(new Code() {
+        assertThrow(XMLDocumentException.class).withMessage("Error creating XMLDoc. Please verify that the input source can be read and is well formed. - XML document structures must start and end within the same entity.").whenRunning(new Code() {
             public void run() throws Throwable {
                 assertSameDoc(XMLDocBuilder.from("<html><html>", true).toDocument().getFirstChild().getNodeName(), "html");
             }
@@ -140,7 +138,7 @@ public final class XMLDocBuilderNoNamespaceTest extends AbstractTest {
 
     @Test
     public void test_from_malformed_source2() {
-        assertThrow(XMLDocumentException.class).withMessage("Error creating XMLDoc. Please verify that the input source can be read and is well formed: Premature end of file.").whenRunning(new Code() {
+        assertThrow(XMLDocumentException.class).withMessage("Error creating XMLDoc. Please verify that the input source can be read and is well formed. - Premature end of file.").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLDocBuilder.from("", true);
             }

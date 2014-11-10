@@ -587,7 +587,7 @@ public final class XMLDocTest extends AbstractTest {
 
     @Test
     public void test_gotoNode_bad_xpath() {
-        assertThrow(XMLDocumentException.class).withMessage("Error compiling xpath ':-)': A location path was expected, but the following token was encountered:  :-").whenRunning(new Code() {
+        assertThrow(XMLDocumentException.class).withMessage("Error compiling xpath ':-)' - A location path was expected, but the following token was encountered:  :-").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLDoc.newDocument(false).addRoot("html").gotoTag(":-)");
             }

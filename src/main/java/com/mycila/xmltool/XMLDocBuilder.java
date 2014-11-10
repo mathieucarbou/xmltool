@@ -18,7 +18,9 @@ package com.mycila.xmltool;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -102,10 +104,13 @@ public final class XMLDocBuilder {
         return name.startsWith("add") || name.startsWith("set") || name.startsWith("delete") || name.startsWith("rename");
     }
 
-    static XMLDocBuilder newDocument(boolean ignoreNamespaces) {
-        return new XMLDocBuilder(new XMLDocDefinition(
-            XMLDocumentBuilderFactory.newDocumentBuilder(ignoreNamespaces).newDocument(),
-            ignoreNamespaces));
+    static XMLDocBuilder newDocument(final boolean ignoreNamespaces) {
+        return XMLDocumentBuilderFactory.withDocumentBuilder(ignoreNamespaces, new XMLDocumentBuilderFactory.Callback<XMLDocBuilder>() {
+            @Override
+            public XMLDocBuilder apply(DocumentBuilder b) throws IOException, SAXException {
+                return new XMLDocBuilder(new XMLDocDefinition(b.newDocument(), ignoreNamespaces));
+            }
+        });
     }
 
     static XMLTag from(File file, boolean ignoreNamespaces) {
@@ -184,28 +189,40 @@ public final class XMLDocBuilder {
         }
     }
 
-    static XMLTag from(InputSource source, boolean ignoreNamespaces) {
-        try {
-            return from(XMLDocumentBuilderFactory.newDocumentBuilder(ignoreNamespaces).parse(source), ignoreNamespaces);
-        } catch (Exception e) {
-            throw new XMLDocumentException("Error creating XMLDoc. Please verify that the input source can be read and is well formed", e);
-        }
+    static XMLTag from(final InputSource source, boolean ignoreNamespaces) {
+        return from(XMLDocumentBuilderFactory.withDocumentBuilder(ignoreNamespaces, new XMLDocumentBuilderFactory.Callback<Document>() {
+            @Override
+            public Document apply(DocumentBuilder b) throws IOException, SAXException {
+                return b.parse(source);
+            }
+        }), ignoreNamespaces);
+
     }
 
     static XMLTag from(Node node, boolean ignoreNamespaces) {
         return create(new XMLDocDefinition(node, ignoreNamespaces));
     }
 
-    static XMLTag from(XMLTag tag, boolean ignoreNamespaces) {
-        Document newDoc = XMLDocumentBuilderFactory.newDocumentBuilder(ignoreNamespaces).newDocument();
-        newDoc.appendChild(newDoc.importNode(tag.toDocument().getDocumentElement(), true));
-        return from(newDoc, ignoreNamespaces);
+    static XMLTag from(final XMLTag tag, final boolean ignoreNamespaces) {
+        return XMLDocumentBuilderFactory.withDocumentBuilder(ignoreNamespaces, new XMLDocumentBuilderFactory.Callback<XMLTag>() {
+            @Override
+            public XMLTag apply(DocumentBuilder b) throws IOException, SAXException {
+                Document newDoc = b.newDocument();
+                newDoc.appendChild(newDoc.importNode(tag.toDocument().getDocumentElement(), true));
+                return from(newDoc, ignoreNamespaces);
+            }
+        });
     }
 
-    static XMLTag fromCurrentTag(XMLTag tag, boolean ignoreNamespaces) {
-        Document newDoc = XMLDocumentBuilderFactory.newDocumentBuilder(ignoreNamespaces).newDocument();
-        newDoc.appendChild(newDoc.importNode(tag.getCurrentTag(), true));
-        return from(newDoc, ignoreNamespaces);
+    static XMLTag fromCurrentTag(final XMLTag tag, final boolean ignoreNamespaces) {
+        return XMLDocumentBuilderFactory.withDocumentBuilder(ignoreNamespaces, new XMLDocumentBuilderFactory.Callback<XMLTag>() {
+            @Override
+            public XMLTag apply(DocumentBuilder b) throws IOException, SAXException {
+                Document newDoc = b.newDocument();
+                newDoc.appendChild(newDoc.importNode(tag.getCurrentTag(), true));
+                return from(newDoc, ignoreNamespaces);
+            }
+        });
     }
 
     static XMLTag from(Source source, boolean ignoreNamespaces) {

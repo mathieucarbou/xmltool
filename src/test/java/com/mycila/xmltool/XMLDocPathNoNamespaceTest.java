@@ -72,7 +72,7 @@ public final class XMLDocPathNoNamespaceTest extends AbstractTest {
 
     @Test
     public void invalid_xpath() {
-        assertThrow(XMLDocumentException.class).withMessage("Error compiling xpath '..v': A location path was expected, but the following token was encountered:  ..v").whenRunning(new Code() {
+        assertThrow(XMLDocumentException.class).withMessage("Error compiling xpath '..v' - A location path was expected, but the following token was encountered:  ..v").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLTag doc = XMLDoc.from(getClass().getResource("/xpath.xml"), true);
                 XMLDocPath xpath = new XMLDocPath((XMLDocDefinition) doc.getContext());

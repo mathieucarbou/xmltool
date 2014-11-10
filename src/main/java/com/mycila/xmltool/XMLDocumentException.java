@@ -23,6 +23,6 @@ public final class XMLDocumentException extends RuntimeException {
         super(String.format(message, args));
     }
     public XMLDocumentException(String message, Throwable cause) {
-        super(message + ": " + Utils.getMessage(cause), cause);
+        super(message + " - " + Utils.getMessage(cause), cause);
     }
 }
