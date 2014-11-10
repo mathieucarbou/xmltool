@@ -61,11 +61,11 @@ __Project status__
 
  __Releases__
 
-Available in Maven Central Repository: http://repo1.maven.org/maven2/com/mycila/xmltool/
+Available in Maven Central Repository: http://repo1.maven.org/maven2/com/mycila/mycila-xmltool/
 
 __Snapshots__
  
-Available in OSS Repository:  https://oss.sonatype.org/content/repositories/snapshots/com/mycila/xmltool/
+Available in OSS Repository:  https://oss.sonatype.org/content/repositories/snapshots/com/mycila/mycila-xmltool/
 
 __Maven dependency__
 
@@ -80,6 +80,27 @@ __Maven sites__
  - [4.0.ga] (http://mycila.github.io/xmltool/reports/4.0.ga/index.html)
 
 ## Documentation ##
+
+### Performance consideration ###
+
+XML Tool uses the Java DOM API. Document creation has a cost. Tus, to improve peformance, XML Tool uses 2 Object pools of `DocumentBuilder` instances: 
+
+* one pool for amespace aware document builders
+* another one ignoring namespaces
+
+You can configure the pool by using `XMLDocumentBuilderFactory.setPoolConfig(config)`
+
+By default, the each of the 2 pools have the following configuration:
+* min idle = 0
+* max idle = CPU core number
+* max total = CPU core number * 4
+* max wait time = -1
+
+If your application is heavily threaded and a lot of threads are using XMLTag concurrently, to avvoid thread contention you might want to increase the max total to match your peak thread count and max idle to match your average thread count.
+
+If your application does not use a lot of thread and often create documents, you could probably lower those numbers.
+
+The goal is to have sufficient `DocumentBuilder` instances available in the pool to be able to "feed" your application as demand without waiting for these object to become available.
 
 ### Creating XML documents ###
 
