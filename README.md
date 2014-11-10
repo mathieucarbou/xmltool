@@ -83,24 +83,27 @@ __Maven sites__
 
 ### Performance consideration ###
 
-XML Tool uses the Java DOM API. Document creation has a cost. Tus, to improve peformance, XML Tool uses 2 Object pools of `DocumentBuilder` instances: 
+XML Tool uses the Java DOM API and `Document` creation has a cost. Thus, to improve peformance, XML Tool uses 2 Object pools of `DocumentBuilder` instances: 
 
-* one pool for amespace aware document builders
+* one pool for namespace-aware document builders
 * another one ignoring namespaces
 
-You can configure the pool by using `XMLDocumentBuilderFactory.setPoolConfig(config)`
+You can configure the pools by using `XMLDocumentBuilderFactory.setPoolConfig(config)`
 
-By default, the each of the 2 pools have the following configuration:
+By default, each of the 2 pools have the following configuration:
+
 * min idle = 0
 * max idle = CPU core number
 * max total = CPU core number * 4
 * max wait time = -1
 
-If your application is heavily threaded and a lot of threads are using XMLTag concurrently, to avvoid thread contention you might want to increase the max total to match your peak thread count and max idle to match your average thread count.
+If your application is heavily threaded and a lot of threads are using XMLTag concurrently, to avoid thread contention you might want to increase the max total to match your peak thread count and max idle to match your average thread count.
 
 If your application does not use a lot of thread and often create documents, you could probably lower those numbers.
 
-The goal is to have sufficient `DocumentBuilder` instances available in the pool to be able to "feed" your application as demand without waiting for these object to become available.
+The goal is to have sufficient `DocumentBuilder` instances available in the pool to be able to "feed" your application as demand without waiting for these objects to become available.
+
+Using an object pool is sure much more complicated, but it will prevent any threading issues and also maximize performance because of object reuse.
 
 ### Creating XML documents ###
 
