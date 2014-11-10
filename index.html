@@ -4,9 +4,9 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -85,8 +85,10 @@
 </li>
 </ul>
 </li>
-</ul><h1>
-<a name="mycila-xml-tool" class="anchor" href="#mycila-xml-tool"><span class="octicon octicon-link"></span></a>Mycila XML Tool</h1>
+</ul>
+
+<h1>
+<a id="mycila-xml-tool" class="anchor" href="#mycila-xml-tool" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mycila XML Tool</h1>
 
 <p>XMLTool is a very simple Java library to be able to do all sorts of common operations with an XML document. As a Java developer, I often end up writing the always the same code for processing XML, transforming, ... So i decided to put all in a very easy to use class using the Fluent Interface pattern to facilitate XML manipulations.</p>
 
@@ -116,7 +118,9 @@ System.out.println(tag.toString());
 <li>Executin callbacks on a hierarchy</li>
 <li>Remove all namspaces (namespace ignoring)</li>
 <li>... and a lot of other features !</li>
-</ul><p><strong>Project status</strong></p>
+</ul>
+
+<p><strong>Project status</strong></p>
 
 <ul>
 <li>
@@ -128,16 +132,18 @@ System.out.println(tag.toString());
 <li>
 <strong>Build Status:</strong> <a href="https://travis-ci.org/mycila/xmltool"><img src="https://travis-ci.org/mycila/xmltool.png?branch=master" alt="Build Status"></a>
 </li>
-</ul><h2>
-<a name="maven-repository" class="anchor" href="#maven-repository"><span class="octicon octicon-link"></span></a>Maven Repository</h2>
+</ul>
+
+<h2>
+<a id="maven-repository" class="anchor" href="#maven-repository" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maven Repository</h2>
 
 <p><strong>Releases</strong></p>
 
-<p>Available in Maven Central Repository: <a href="http://repo1.maven.org/maven2/com/mycila/xmltool/">http://repo1.maven.org/maven2/com/mycila/xmltool/</a></p>
+<p>Available in Maven Central Repository: <a href="http://repo1.maven.org/maven2/com/mycila/mycila-xmltool/">http://repo1.maven.org/maven2/com/mycila/mycila-xmltool/</a></p>
 
 <p><strong>Snapshots</strong></p>
 
-<p>Available in OSS Repository:  <a href="https://oss.sonatype.org/content/repositories/snapshots/com/mycila/xmltool/">https://oss.sonatype.org/content/repositories/snapshots/com/mycila/xmltool/</a></p>
+<p>Available in OSS Repository:  <a href="https://oss.sonatype.org/content/repositories/snapshots/com/mycila/mycila-xmltool/">https://oss.sonatype.org/content/repositories/snapshots/com/mycila/mycila-xmltool/</a></p>
 
 <p><strong>Maven dependency</strong></p>
 
@@ -152,14 +158,45 @@ System.out.println(tag.toString());
 
 <ul>
 <li><a href="http://mycila.github.io/xmltool/reports/4.0.ga/index.html">4.0.ga</a></li>
-</ul><h2>
-<a name="documentation" class="anchor" href="#documentation"><span class="octicon octicon-link"></span></a>Documentation</h2>
+</ul>
+
+<h2>
+<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h2>
 
 <h3>
-<a name="creating-xml-documents" class="anchor" href="#creating-xml-documents"><span class="octicon octicon-link"></span></a>Creating XML documents</h3>
+<a id="performance-consideration" class="anchor" href="#performance-consideration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Performance consideration</h3>
+
+<p>XML Tool uses the Java DOM API and <code>Document</code> creation has a cost. Thus, to improve peformance, XML Tool uses 2 Object pools of <code>DocumentBuilder</code> instances: </p>
+
+<ul>
+<li>one pool for namespace-aware document builders</li>
+<li>another one ignoring namespaces</li>
+</ul>
+
+<p>You can configure the pools by using <code>XMLDocumentBuilderFactory.setPoolConfig(config)</code></p>
+
+<p>By default, each of the 2 pools have the following configuration:</p>
+
+<ul>
+<li>min idle = 0</li>
+<li>max idle = CPU core number</li>
+<li>max total = CPU core number * 4</li>
+<li>max wait time = -1</li>
+</ul>
+
+<p>If your application is heavily threaded and a lot of threads are using XMLTag concurrently, to avoid thread contention you might want to increase the max total to match your peak thread count and max idle to match your average thread count.</p>
+
+<p>If your application does not use a lot of thread and often create documents, you could probably lower those numbers.</p>
+
+<p>The goal is to have sufficient <code>DocumentBuilder</code> instances available in the pool to be able to "feed" your application as demand without waiting for these objects to become available.</p>
+
+<p>Using an object pool is sure much more complicated, but it will prevent any threading issues and also maximize performance because of object reuse.</p>
+
+<h3>
+<a id="creating-xml-documents" class="anchor" href="#creating-xml-documents" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating XML documents</h3>
 
 <h4>
-<a name="creating-a-new-xml-document" class="anchor" href="#creating-a-new-xml-document"><span class="octicon octicon-link"></span></a>Creating a new XML document</h4>
+<a id="creating-a-new-xml-document" class="anchor" href="#creating-a-new-xml-document" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating a new XML document</h4>
 
 <p>The <code>newDocument</code> method crate a new XML document. You then have to choose a default namespace if you want and then choose the root name of the document.</p>
 
@@ -173,7 +210,7 @@ System.out.println(tag.toString());
 </code></pre>
 
 <h4>
-<a name="loading-an-existing-xml-document" class="anchor" href="#loading-an-existing-xml-document"><span class="octicon octicon-link"></span></a>Loading an existing XML document</h4>
+<a id="loading-an-existing-xml-document" class="anchor" href="#loading-an-existing-xml-document" aria-hidden="true"><span class="octicon octicon-link"></span></a>Loading an existing XML document</h4>
 
 <p>The <code>from</code> methods can load an XML document from any of the following types:</p>
 
@@ -186,7 +223,9 @@ System.out.println(tag.toString());
 <li>URL</li>
 <li>String</li>
 <li>javax.xml.transform.Source</li>
-</ul><p><strong>Example:</strong></p>
+</ul>
+
+<p><strong>Example:</strong></p>
 
 <pre><code>URL yahooGeoCode = new URL("http://local.yahooapis.com/MapsService/V1/geocode?appid=YD-9G7bey8_JXxQP6rxl.fBFGgCdNjoDMACQA--&amp;state=QC&amp;country=CA&amp;zip=H1W3B8");
 System.out.println(XMLDoc.from(yahooGeoCode, true).toString());
@@ -213,7 +252,7 @@ Montreal
 </code></pre>
 
 <h4>
-<a name="ignoring-namespaces" class="anchor" href="#ignoring-namespaces"><span class="octicon octicon-link"></span></a>Ignoring namespaces</h4>
+<a id="ignoring-namespaces" class="anchor" href="#ignoring-namespaces" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ignoring namespaces</h4>
 
 <p>All creational methods <code>XMLDoc.newDocument</code> and <code>XMLDoc.from</code> requires a boolean attribute <code>ignoreNamespaces</code>. If this attribute is set to true, all namespaces in the document are ignored. This is really useful if you use XPath a lot since you can avoid prefixing all your XPath elements.</p>
 
@@ -251,12 +290,12 @@ System.out.println(XMLDoc.newDocument(false)
 </code></pre>
 
 <h3>
-<a name="using-namespaces" class="anchor" href="#using-namespaces"><span class="octicon octicon-link"></span></a>Using namespaces</h3>
+<a id="using-namespaces" class="anchor" href="#using-namespaces" aria-hidden="true"><span class="octicon octicon-link"></span></a>Using namespaces</h3>
 
 <p>When you create or load a document, and if you decide to not ignore namespaces, you can add a default namespace for your document and add other ones after. Namespace management is quite a challenge, specifically when using XPath. When you have an XMLTag instance, you have access to the following methods to manage namespaces in the document:</p>
 
 <h4>
-<a name="adding-and-retrieving-namespaces-and-prefixes" class="anchor" href="#adding-and-retrieving-namespaces-and-prefixes"><span class="octicon octicon-link"></span></a>Adding and retrieving namespaces and prefixes</h4>
+<a id="adding-and-retrieving-namespaces-and-prefixes" class="anchor" href="#adding-and-retrieving-namespaces-and-prefixes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adding and retrieving namespaces and prefixes</h4>
 
 <p><strong>addDefaultNamespace</strong></p>
 
@@ -324,7 +363,7 @@ assertEquals(doc.getContext().getNamespaceURI("ns0"), "http://www.w3.org/1999/xh
 </code></pre>
 
 <h4>
-<a name="prefix-constraints" class="anchor" href="#prefix-constraints"><span class="octicon octicon-link"></span></a>Prefix constraints</h4>
+<a id="prefix-constraints" class="anchor" href="#prefix-constraints" aria-hidden="true"><span class="octicon octicon-link"></span></a>Prefix constraints</h4>
 
 <p>You cannot override an already defined prefix in a context, and you cannot override default XML prefixes. The following 3 attempts will throw an exception:</p>
 
@@ -340,10 +379,10 @@ XMLDoc.newDocument()
 </code></pre>
 
 <h3>
-<a name="xml-elements-operations" class="anchor" href="#xml-elements-operations"><span class="octicon octicon-link"></span></a>XML elements operations</h3>
+<a id="xml-elements-operations" class="anchor" href="#xml-elements-operations" aria-hidden="true"><span class="octicon octicon-link"></span></a>XML elements operations</h3>
 
 <h4>
-<a name="on-elements" class="anchor" href="#on-elements"><span class="octicon octicon-link"></span></a>On elements</h4>
+<a id="on-elements" class="anchor" href="#on-elements" aria-hidden="true"><span class="octicon octicon-link"></span></a>On elements</h4>
 
 <p>Operations affecting elements: <code>hasTag</code>, <code>addTag</code>, <code>getCurrentTag</code>, <code>getCurrentTagName</code>, <code>deleteChilds</code>, <code>delete</code>, <code>renameTo</code></p>
 
@@ -447,7 +486,7 @@ System.out.println(XMLDoc.newDocument(true)
 </code></pre>
 
 <h4>
-<a name="on-attributes" class="anchor" href="#on-attributes"><span class="octicon octicon-link"></span></a>On attributes</h4>
+<a id="on-attributes" class="anchor" href="#on-attributes" aria-hidden="true"><span class="octicon octicon-link"></span></a>On attributes</h4>
 
 <p>Operations affecting elements: <code>hasAttribute</code>, <code>getAttributeNames</code>, <code>getAttribute</code>, <code>deleteAttributes</code>, <code>deleteAttribute</code></p>
 
@@ -542,7 +581,7 @@ false
 </code></pre>
 
 <h4>
-<a name="on-text-and-data" class="anchor" href="#on-text-and-data"><span class="octicon octicon-link"></span></a>On text and data</h4>
+<a id="on-text-and-data" class="anchor" href="#on-text-and-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>On text and data</h4>
 
 <p>Operations affecting elements: <code>addText</code>, <code>addCDATA</code>, <code>getAttribute</code>, <code>deleteAttributes</code>, <code>deleteAttribute</code></p>
 
@@ -605,10 +644,10 @@ assertEquals(doc.getAttribute("ns0:id"), "titleID");
 <p>NB: we loaded the document by not ignorign namespaces. That's why you see required ns prefixes in XPath expressions.</p>
 
 <h3>
-<a name="navigation-xpath-and-callback-support" class="anchor" href="#navigation-xpath-and-callback-support"><span class="octicon octicon-link"></span></a>Navigation, XPath and Callback support</h3>
+<a id="navigation-xpath-and-callback-support" class="anchor" href="#navigation-xpath-and-callback-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Navigation, XPath and Callback support</h3>
 
 <h4>
-<a name="raw-xpath" class="anchor" href="#raw-xpath"><span class="octicon octicon-link"></span></a>Raw XPath</h4>
+<a id="raw-xpath" class="anchor" href="#raw-xpath" aria-hidden="true"><span class="octicon octicon-link"></span></a>Raw XPath</h4>
 
 <p>You can execute RAW XPath directly through Java Xpath API by using <code>rawXpath</code> methods:</p>
 
@@ -618,8 +657,10 @@ assertEquals(doc.getAttribute("ns0:id"), "titleID");
 <li>String XMLTag.rawXpathString(...)</li>
 <li>Node XMLTag.rawXpathNode(...)</li>
 <li>NodeList XMLTag.rawXpathNodeSet(...)</li>
-</ul><h4>
-<a name="gotos" class="anchor" href="#gotos"><span class="octicon octicon-link"></span></a>Gotos</h4>
+</ul>
+
+<h4>
+<a id="gotos" class="anchor" href="#gotos" aria-hidden="true"><span class="octicon octicon-link"></span></a>Gotos</h4>
 
 <p>Navigation in the document is achieved by <code>gotos</code> methods</p>
 
@@ -683,7 +724,7 @@ assertEquals(doc.getAttribute("ns0:id"), "titleID");
 <p>Notice the Xpath expression when we use namespace: as we load an existing document, we can get generated prefix for a namespace with the <code>getPrefix</code> method. Then we can use this generated prefix in our XPath. <code>%1$s</code> means that we take the first argument provided (see String.format() documentation). If you debug, you will see that the XPath expression is <code>ns0:body/w:border[1]/ns0:div</code>.</p>
 
 <h4>
-<a name="callbacks-on-selected-nodes" class="anchor" href="#callbacks-on-selected-nodes"><span class="octicon octicon-link"></span></a>Callbacks on selected nodes</h4>
+<a id="callbacks-on-selected-nodes" class="anchor" href="#callbacks-on-selected-nodes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Callbacks on selected nodes</h4>
 
 <p>Callbacks: <code>forEach</code>, <code>forEachChilds</code></p>
 
@@ -733,7 +774,7 @@ footer
 </code></pre>
 
 <h3>
-<a name="converting-your-xml-document" class="anchor" href="#converting-your-xml-document"><span class="octicon octicon-link"></span></a>Converting your XML document</h3>
+<a id="converting-your-xml-document" class="anchor" href="#converting-your-xml-document" aria-hidden="true"><span class="octicon octicon-link"></span></a>Converting your XML document</h3>
 
 <p>Document conversion is done through <code>to*</code> methods.</p>
 
@@ -763,7 +804,7 @@ footer
 </code></pre>
 
 <h3>
-<a name="validating-your-xml-document" class="anchor" href="#validating-your-xml-document"><span class="octicon octicon-link"></span></a>Validating your XML document</h3>
+<a id="validating-your-xml-document" class="anchor" href="#validating-your-xml-document" aria-hidden="true"><span class="octicon octicon-link"></span></a>Validating your XML document</h3>
 
 <p>XML validation enables to validate current document against a shema. Of course, to use this functionnality you need to create a document that does not ignore namespaces.</p>
 
@@ -794,7 +835,9 @@ footer
 </li>
 <li>Namespace <a href="http://wicket.sourceforge.net/wicket-1.0">http://wicket.sourceforge.net/wicket-1.0</a> is defined in schema <a href="http://wicket.sourceforge.net/wicket-1.0.xsd">http://wicket.sourceforge.net/wicket-1.0.xsd</a>
 </li>
-</ul><p>If we validate the XML document goto.xml seen above:</p>
+</ul>
+
+<p>If we validate the XML document goto.xml seen above:</p>
 
 <pre><code>ValidationResult results = XMLDoc.from(getClass().getResource("/goto.xml")).validate(
         new URL("http://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd"),
@@ -819,11 +862,11 @@ System.out.println(Arrays.deepToString(results.getErrorMessages()));
 </code></pre>
 
 <h3>
-<a name="exception-handling" class="anchor" href="#exception-handling"><span class="octicon octicon-link"></span></a>Exception handling</h3>
+<a id="exception-handling" class="anchor" href="#exception-handling" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exception handling</h3>
 
 <p>Each operation causing an exception throws a XMLDocumentException with a described message.</p>
 
-<p><a href="http://githalytics.com/mycila/xmltool"><img src="https://cruel-carlota.pagodabox.com/60f4da90933fb3bd1120d33f01be65e6" alt="githalytics.com alpha" title="githalytics.com"></a></p>
+<p><a href="http://githalytics.com/mycila/xmltool"><img src="https://cruel-carlota.pagodabox.com/c89084a008d60a2378ce0b480d883d8e" alt="githalytics.com alpha" title="githalytics.com"></a></p>
         </section>
 
         <footer>
