@@ -41,7 +41,11 @@ final class Utils {
             message = cause.getMessage();
             cause = cause.getCause();
         }
-        return message == null ? "no description available" : message;
+        message = message == null ? "no description available" : message;
+        if(message.startsWith("javax.xml.transform.TransformerException: ")) {
+            return message.substring(42);
+        }
+        return message;
     }
 
     static void notEmpty(String name, String value) {

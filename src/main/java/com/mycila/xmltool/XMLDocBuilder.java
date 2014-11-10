@@ -19,22 +19,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
-import java.io.BufferedInputStream;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.StringReader;
+import java.io.*;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -93,20 +83,19 @@ public final class XMLDocBuilder {
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                 try {
                     Object o = method.invoke(doc, args);
-                    if(needsNormalization(method.getName())) {
+                    if (needsNormalization(method.getName())) {
                         def.normalize();
                     }
                     return o;
-                }
-                catch (InvocationTargetException e) {
+                } catch (InvocationTargetException e) {
                     throw e.getTargetException();
                 }
             }
         };
         return (XMLTag) Proxy.newProxyInstance(
-                Thread.currentThread().getContextClassLoader(),
-                new Class<?>[]{XMLTag.class},
-                handler);
+            Thread.currentThread().getContextClassLoader(),
+            new Class<?>[]{XMLTag.class},
+            handler);
     }
 
     private static boolean needsNormalization(String name) {
@@ -115,8 +104,8 @@ public final class XMLDocBuilder {
 
     static XMLDocBuilder newDocument(boolean ignoreNamespaces) {
         return new XMLDocBuilder(new XMLDocDefinition(
-                XMLDocumentBuilderFactory.newDocumentBuilder(ignoreNamespaces).newDocument(),
-                ignoreNamespaces));
+            XMLDocumentBuilderFactory.newDocumentBuilder(ignoreNamespaces).newDocument(),
+            ignoreNamespaces));
     }
 
     static XMLTag from(File file, boolean ignoreNamespaces) {
@@ -127,11 +116,26 @@ public final class XMLDocBuilder {
         }
     }
 
+    static XMLTag from(File file, boolean ignoreNamespaces, String encoding) {
+        try {
+            return from(new BufferedInputStream(new FileInputStream(file)), ignoreNamespaces, encoding);
+        } catch (FileNotFoundException e) {
+            throw new XMLDocumentException(e.getMessage(), e);
+        }
+    }
+
     static XMLTag from(URL xmlLocation, boolean ignoreNamespaces) {
         try {
             return from(new BufferedInputStream(xmlLocation.openStream()), ignoreNamespaces);
+        } catch (IOException e) {
+            throw new XMLDocumentException(e.getMessage(), e);
         }
-        catch (IOException e) {
+    }
+
+    static XMLTag from(URL xmlLocation, boolean ignoreNamespaces, String encoding) {
+        try {
+            return from(new BufferedInputStream(xmlLocation.openStream()), ignoreNamespaces, encoding);
+        } catch (IOException e) {
             throw new XMLDocumentException(e.getMessage(), e);
         }
     }
@@ -140,9 +144,23 @@ public final class XMLDocBuilder {
         return from(new StringReader(xmlData), ignoreNamespaces);
     }
 
+    static XMLTag from(String xmlData, boolean ignoreNamespaces, String encoding) {
+        return from(new StringReader(xmlData), ignoreNamespaces, encoding);
+    }
+
     static XMLTag from(Reader reader, boolean ignoreNamespaces) {
         try {
             return from(new InputSource(reader), ignoreNamespaces);
+        } finally {
+            close(reader);
+        }
+    }
+
+    static XMLTag from(Reader reader, boolean ignoreNamespaces, String encoding) {
+        try {
+            InputSource source = new InputSource(reader);
+            source.setEncoding(encoding);
+            return from(source, ignoreNamespaces);
         } finally {
             close(reader);
         }
@@ -156,11 +174,20 @@ public final class XMLDocBuilder {
         }
     }
 
+    static XMLTag from(InputStream is, boolean ignoreNamespaces, String encoding) {
+        try {
+            InputSource source = new InputSource(is);
+            source.setEncoding(encoding);
+            return from(source, ignoreNamespaces);
+        } finally {
+            close(is);
+        }
+    }
+
     static XMLTag from(InputSource source, boolean ignoreNamespaces) {
         try {
             return from(XMLDocumentBuilderFactory.newDocumentBuilder(ignoreNamespaces).parse(source), ignoreNamespaces);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new XMLDocumentException("Error creating XMLDoc. Please verify that the input source can be read and is well formed", e);
         }
     }
@@ -187,7 +214,20 @@ public final class XMLDocBuilder {
             TransformerFactory tf = TransformerFactory.newInstance();
             Transformer transformer = tf.newTransformer();
             transformer.transform(source, result);
-        } catch(Exception e) {
+        } catch (Exception e) {
+            throw new XMLDocumentException("Error creating XMLDoc. Please verify that the input source can be read and is well formed", e);
+        }
+        return from(result.getNode(), ignoreNamespaces);
+    }
+
+    static XMLTag from(Source source, boolean ignoreNamespaces, String encoding) {
+        DOMResult result = new DOMResult();
+        try {
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.setOutputProperty(OutputKeys.ENCODING, encoding);
+            transformer.transform(source, result);
+        } catch (Exception e) {
             throw new XMLDocumentException("Error creating XMLDoc. Please verify that the input source can be read and is well formed", e);
         }
         return from(result.getNode(), ignoreNamespaces);
@@ -196,8 +236,7 @@ public final class XMLDocBuilder {
     private static void close(Closeable c) {
         try {
             c.close();
-        }
-        catch (IOException ignored) {
+        } catch (IOException ignored) {
         }
     }
 

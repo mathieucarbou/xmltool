@@ -15,45 +15,18 @@
  */
 package com.mycila.xmltool;
 
-import org.w3c.dom.Attr;
-import org.w3c.dom.CDATASection;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
+import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
+import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import static com.mycila.xmltool.Utils.notEmpty;
 import static com.mycila.xmltool.Utils.notNull;
@@ -937,9 +910,19 @@ public final class XMLDoc implements XMLTag {
         return XMLDocBuilder.from(reader, ignoreNamespaces);
     }
 
+    public static XMLTag from(Reader reader, boolean ignoreNamespaces, String encoding) {
+        notNull("Reader", reader);
+        return XMLDocBuilder.from(reader, ignoreNamespaces, encoding);
+    }
+
     public static XMLTag from(InputStream is, boolean ignoreNamespaces) {
         notNull("InputStream", is);
         return XMLDocBuilder.from(is, ignoreNamespaces);
+    }
+
+    public static XMLTag from(InputStream is, boolean ignoreNamespaces, String encoding) {
+        notNull("InputStream", is);
+        return XMLDocBuilder.from(is, ignoreNamespaces, encoding);
     }
 
     public static XMLTag from(File file, boolean ignoreNamespaces) {
@@ -947,9 +930,19 @@ public final class XMLDoc implements XMLTag {
         return XMLDocBuilder.from(file, ignoreNamespaces);
     }
 
+    public static XMLTag from(File file, boolean ignoreNamespaces, String encoding) {
+        notNull("File", file);
+        return XMLDocBuilder.from(file, ignoreNamespaces, encoding);
+    }
+
     public static XMLTag from(URL xmlLocation, boolean ignoreNamespaces) {
         notNull("URL", xmlLocation);
         return XMLDocBuilder.from(xmlLocation, ignoreNamespaces);
+    }
+
+    public static XMLTag from(URL xmlLocation, boolean ignoreNamespaces, String encoding) {
+        notNull("URL", xmlLocation);
+        return XMLDocBuilder.from(xmlLocation, ignoreNamespaces, encoding);
     }
 
     public static XMLTag from(String xmlData, boolean ignoreNamespaces) {
@@ -957,9 +950,19 @@ public final class XMLDoc implements XMLTag {
         return XMLDocBuilder.from(xmlData, ignoreNamespaces);
     }
 
+    public static XMLTag from(String xmlData, boolean ignoreNamespaces, String encoding) {
+        notEmpty("XML Data", xmlData);
+        return XMLDocBuilder.from(xmlData, ignoreNamespaces, encoding);
+    }
+
     public static XMLTag from(Source source, boolean ignoreNamespaces) {
         notNull("Source", source);
         return XMLDocBuilder.from(source, ignoreNamespaces);
+    }
+
+    public static XMLTag from(Source source, boolean ignoreNamespaces, String encoding) {
+        notNull("Source", source);
+        return XMLDocBuilder.from(source, ignoreNamespaces, encoding);
     }
 
     public static XMLTag from(XMLTag tag, boolean ignoreNamespaces) {

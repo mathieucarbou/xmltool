@@ -21,19 +21,13 @@ import org.xml.sax.InputSource;
 
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.*;
 import java.net.URL;
 import java.util.Arrays;
 
 import static com.mycila.xmltool.Assert.Code;
 import static com.mycila.xmltool.Assert.assertThrow;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -215,11 +209,11 @@ public final class XMLDocTest extends AbstractTest {
         assertThrow(XMLDocumentException.class).withMessage("Attribute 'onclick' already exist on tag 'body'").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLDoc.newDocument(false).addRoot("html")
-                        .addAttribute("lang", "en")
-                        .addTag("body")
-                        .addAttribute("onload", "func1")
-                        .addAttribute("onclick", "func2")
-                        .addAttribute("onclick", "1<2");
+                    .addAttribute("lang", "en")
+                    .addTag("body")
+                    .addAttribute("onload", "func1")
+                    .addAttribute("onclick", "func2")
+                    .addAttribute("onclick", "1<2");
             }
         });
     }
@@ -639,6 +633,15 @@ public final class XMLDocTest extends AbstractTest {
         assertEquals(doc.gotoRoot().gotoTag("body").getText(), "txt");
         assertEquals(doc.gotoRoot().gotoTag("head[1]").getText(), "txt1");
         assertEquals(doc.gotoRoot().gotoTag("head[2]").getText(), "txt2");
+    }
+
+    @Test
+    public void test_gototag_with_formater() {
+        XMLTag doc = XMLDoc.newDocument(false).addRoot("html")
+                .addTag("body").addText("txt")
+                .addTag("head").addText("txt1")
+                .addTag("head").addText("txt2");
+        assertEquals(doc.gotoRoot().gotoTag("head[%s]", "1").getText(), "txt1");
     }
 
     @Test

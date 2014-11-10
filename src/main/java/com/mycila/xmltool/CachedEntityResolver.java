@@ -20,16 +20,11 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.EntityResolver2;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -38,7 +33,7 @@ final class CachedEntityResolver implements EntityResolver, EntityResolver2 {
 
     static final CachedEntityResolver instance = new CachedEntityResolver();
 
-    private Map<String, String> cache = new LinkedHashMap<String, String>();
+    private Map<String, String[]> cache = new ConcurrentHashMap<String, String[]>();
 
     private CachedEntityResolver() {
     }
@@ -52,33 +47,35 @@ final class CachedEntityResolver implements EntityResolver, EntityResolver2 {
     }
 
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
-        String content = cache.get(systemId);
-        if (content == null) {
-            content = read(systemId);
-            cache.put(systemId, content);
+        String[] objs = cache.get(systemId);
+        if (objs == null) {
+            objs = read(systemId);
+            cache.put(systemId, objs);
         }
-        return new InputSource(new StringReader(content));
+        InputSource is = new InputSource(new StringReader(objs[0]));
+        is.setEncoding(objs[1]);
+        return is;
     }
 
-    private String read(String url) {
+    private String[] read(String url) {
         try {
             URL u = new URL(url);
             URLConnection con = u.openConnection();
-            con.setConnectTimeout(1000);
-            con.setReadTimeout(1000);
-            con.setDefaultUseCaches(true);
-            con.setUseCaches(true);
+            con.setConnectTimeout(5000);
+            con.setReadTimeout(5000);
+            con.setUseCaches(false);
             con.connect();
             StringWriter sw = new StringWriter();
-            BufferedReader br = new BufferedReader(new InputStreamReader(new BufferedInputStream(con.getInputStream()), con.getContentEncoding() != null ? con.getContentEncoding() : "UTF-8"));
+            String enc = con.getContentEncoding() != null ? con.getContentEncoding() : "UTF-8";
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), enc));
             char[] buffer = new char[8192];
             int c;
             while ((c = br.read(buffer)) != -1) {
                 sw.write(buffer, 0, c);
             }
-            return sw.toString();
+            return new String[]{sw.toString(), enc};
         } catch (IOException e) {
-            return "";
+            return new String[]{"", "UTF-8"};
         }
     }
 }
