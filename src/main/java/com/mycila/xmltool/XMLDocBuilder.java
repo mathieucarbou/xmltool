@@ -57,8 +57,7 @@ public final class XMLDocBuilder {
     }
 
     /**
-     * Set the default namespace to use in the document declaration. I.e.
-     * <code>&lt;html xmlns="http://www.w3.org/1999/xhtml"></code>
+     * Set the default namespace to use in the document declaration.
      *
      * @param defaultNamespaceURI URI to use as default when tags are not prefixed
      * @return this

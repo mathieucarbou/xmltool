@@ -15,13 +15,7 @@
  */
 package com.mycila.xmltool;
 
-import org.w3c.dom.Attr;
-import org.w3c.dom.CDATASection;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
+import org.w3c.dom.*;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.transform.Result;
@@ -33,7 +27,7 @@ import java.util.List;
 
 /**
  * Enables you to build, parse, navigate, modify XML documents through a simple and intuitive fluent interface.
- * <p/>
+ * 
  * {@code XMLTag} is <strong>not thread-safe</strong> and cannot be considered so, even for non mutating methods.
  * This is due to the current location which needs to be kept, as we work in a fluent interface style.
  *
@@ -73,9 +67,9 @@ public interface XMLTag {
 
     /**
      * Add a text node under the current node, and jump to the parent node. This enables the create or quick documents like this:
-     * <p/>
+     * 
      * <code>addTag("name").addText("Bob")addTag("sex").addText("M")addTag("age").addText("30")</code>
-     * <p/>
+     * 
      * {@code <name>Bob</name><sex>M</sex><age>30</age>}
      *
      * @param text the text to add
@@ -85,9 +79,9 @@ public interface XMLTag {
 
     /**
      * Add a data node under the current node, and jump to the parent node. This enables the create or quick documents like this:
-     * <p/>
+     * 
      * <code>addTag("name").addCDATA("Bob")addTag("sex").addCDATA("M")addTag("age").addCDATA("30")</code>
-     * <p/>
+     * 
      * {@code <name><![CDATA[Bob]]></name><sex><![CDATA[M]]></sex><age><![CDATA[30]]></age>}
      *
      * @param data the data to add
@@ -365,7 +359,7 @@ public interface XMLTag {
      *     }
      * }
      * assertEquals(tag.getCurrentTagName(), "b");}</pre>
-     * <p/>
+     * 
      * <pre>{@code
      * XMLTag tag = XMLDoc.newDocument(true)
      *         .addRoot("root").addTag("a")
@@ -556,9 +550,9 @@ public interface XMLTag {
     /**
      * Set the text in the current node. This method will replace all existing text and cdata by the given text.
      * Also Jump after to the parent node. This enables the quicly replace test on several nodes like this:
-     * <p/>
+     * 
      * <code>gotoChild("name").setText("Bob").gotoChild("sex").setText("M").gotoChild("age").setText("30")</code>
-     * <p/>
+     * 
      * {@code <name>Bob</name><sex>M</sex><age>30</age>}
      *
      * @param text text to put under this node
@@ -592,9 +586,9 @@ public interface XMLTag {
     /**
      * Set the cdata in the current node. This method will replace all existing text and cdata by the given cdata
      * Also Jump after to the parent node. This enables the quicly replace test on several nodes like this:
-     * <p/>
+     * 
      * <code>gotoChild("name").setText("Bob").gotoChild("sex").setText("M").gotoChild("age").setText("30")</code>
-     * <p/>
+     * 
      * {@code <name>Bob</name><sex>M</sex><age>30</age>}
      *
      * @param data text to put under this node in a cdata section
