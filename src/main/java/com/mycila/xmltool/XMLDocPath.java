@@ -27,11 +27,7 @@ import java.util.Map;
 
 import static com.mycila.xmltool.Utils.notEmpty;
 import static com.mycila.xmltool.Utils.notNull;
-import static javax.xml.xpath.XPathConstants.BOOLEAN;
-import static javax.xml.xpath.XPathConstants.NODE;
-import static javax.xml.xpath.XPathConstants.NODESET;
-import static javax.xml.xpath.XPathConstants.NUMBER;
-import static javax.xml.xpath.XPathConstants.STRING;
+import static javax.xml.xpath.XPathConstants.*;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -87,7 +83,7 @@ final class XMLDocPath {
     Node findNode(Node root, String xpathExpr, Object... args) {
         Node n = eval(getExpr(xpathExpr, args), root, NODE);
         if (n == null) {
-            throw new XMLDocumentException(String.format("Error executing xpath '%s' from node '%s': Inexisting target node.", xpathExpr, root.getNodeName()));
+            throw new XMLDocumentException(String.format("Error executing xpath '%s' from node '%s': Inexisting target node.", String.format(xpathExpr, args), root.getNodeName()));
         }
         return n;
     }
@@ -114,7 +110,7 @@ final class XMLDocPath {
             }
             return expr;
         } catch (Exception e) {
-            throw new XMLDocumentException(String.format("Error compiling xpath '%s'", xpathExpr), e);
+            throw new XMLDocumentException(String.format("Error compiling xpath '%s'", String.format(xpathExpr, args)), e);
         }
     }
 }
