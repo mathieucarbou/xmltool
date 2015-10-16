@@ -124,6 +124,15 @@ final class XMLDocDefinition implements NamespaceContext {
         return attr;
     }
 
+    Attr createAttributeNS(Element current, String namespaceURI, String name, String value) {
+        notEmpty("Attribute name", name);
+
+        Attr attr = document.createAttributeNS(namespaceURI, name);
+        attr.setValue(value);
+        current.setAttributeNodeNS(attr);
+        return attr;
+    }
+
     Text createText(String text) {
         notNull("Text", text);
         return document.createTextNode(text);

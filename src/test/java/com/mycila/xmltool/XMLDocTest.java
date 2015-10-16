@@ -205,6 +205,25 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
+    public void test_addAttributeNS() throws Exception {
+        XMLTag doc = XMLDoc.newDocument(false).addRoot("html")
+                .addAttribute("lang", "en")
+                .addAttributeNS("http://myns", "fish", "taco")
+                .addTag("body")
+                .addAttribute("onload", "func1")
+                .addAttribute("onclick", "1<2");
+        assertSameDoc(doc.toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><html xmlns:ns0=\"http://myns\" ns0:fish=\"taco\" lang=\"en\"><body onclick=\"1&lt;2\" onload=\"func1\"/></html>");
+
+        doc = XMLDoc.newDocument(false).addRoot("html")
+                .addAttribute("lang", "en")
+                .addAttributeNS(null, "fish", "taco")
+                .addTag("body")
+                .addAttribute("onload", "func1")
+                .addAttribute("onclick", "1<2");
+        assertSameDoc(doc.toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><html fish=\"taco\" lang=\"en\"><body onclick=\"1&lt;2\" onload=\"func1\"/></html>");
+    }
+
+    @Test
     public void test_addAttribute_existing() throws Exception {
         assertThrow(XMLDocumentException.class).withMessage("Attribute 'onclick' already exist on tag 'body'").whenRunning(new Code() {
             public void run() throws Throwable {
@@ -225,6 +244,13 @@ public final class XMLDocTest extends AbstractTest {
                 .addRoot("html")
                 .addAttribute("lang", "en");
         assertSameDoc(doc.toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><html xmlns=\"http://myns\" xmlns:NS1=\"http://myns\" NS1:lang=\"en\"/>");
+
+        doc = XMLDoc.newDocument(false)
+                .addDefaultNamespace("http://myns")
+                .addRoot("html")
+                .addAttributeNS(null, "lang", "en");
+        System.out.println(doc.toString());
+        assertSameDoc(doc.toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><html xmlns=\"http://myns\" lang=\"en\"/>");
 
         doc = XMLDoc.newDocument(false)
                 .addDefaultNamespace("http://myns")
