@@ -324,8 +324,7 @@ public final class XMLDoc implements XMLTag {
 
     public String getInnerText() {
         try {
-            TransformerFactory tf = TransformerFactory.newInstance();
-            Transformer transformer = tf.newTransformer();
+            Transformer transformer = XMLFactories.createTransformer();
             transformer.setOutputProperty(OutputKeys.ENCODING, definition.getEncoding());
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             StringWriter sw = new StringWriter();
@@ -726,12 +725,7 @@ public final class XMLDoc implements XMLTag {
     public XMLTag toResult(Result out, String encoding) {
         notEmpty("encoding", encoding);
         try {
-            TransformerFactory tf = TransformerFactory.newInstance();
-            try {
-                tf.setAttribute("indent-number", 4);
-            } catch (Exception ignored) {
-            }
-            Transformer transformer = tf.newTransformer();
+            Transformer transformer = XMLFactories.createTransformer();
             transformer.setParameter("indent-number", 4);
             transformer.setOutputProperty(OutputKeys.METHOD, "xml");
             transformer.setOutputProperty(OutputKeys.ENCODING, encoding);
