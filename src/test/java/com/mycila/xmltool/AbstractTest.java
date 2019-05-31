@@ -15,13 +15,15 @@
  */
 package com.mycila.xmltool;
 
-import org.junit.Assert;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.util.Locale;
+
+import org.junit.Assert;
+import org.junit.BeforeClass;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -31,7 +33,13 @@ public abstract class AbstractTest {
     private static final SoftHashMap<URL, byte[]> cache = new SoftHashMap<URL, byte[]>();
     private static final byte[] NULL = new byte[0];
 
-    protected void assertSameDoc(String actual, String expected) {
+    @BeforeClass
+    public static void setLocaleToEN_US() {
+      // needed to make tests pass on non-EN/US systems due to localized exception messsages
+      Locale.setDefault(Locale.US);
+    }
+    
+    protected void assertSameDoc(final String actual, final String expected) {
         Assert.assertEquals(actual.replaceAll("\\r|\\n", "").replaceAll(">\\s*<", "><"), expected.replaceAll("\\r|\\n", "").replaceAll(">\\s*<", "><"));
     }
 
