@@ -227,8 +227,7 @@ public final class XMLDocBuilder {
     static XMLTag from(Source source, boolean ignoreNamespaces) {
         DOMResult result = new DOMResult();
         try {
-            TransformerFactory tf = TransformerFactory.newInstance();
-            Transformer transformer = tf.newTransformer();
+            Transformer transformer = XMLFactories.createTransformer();
             transformer.transform(source, result);
         } catch (Exception e) {
             throw new XMLDocumentException("Error creating XMLDoc. Please verify that the input source can be read and is well formed", e);
@@ -239,8 +238,7 @@ public final class XMLDocBuilder {
     static XMLTag from(Source source, boolean ignoreNamespaces, String encoding) {
         DOMResult result = new DOMResult();
         try {
-            TransformerFactory tf = TransformerFactory.newInstance();
-            Transformer transformer = tf.newTransformer();
+            Transformer transformer = XMLFactories.createTransformer();
             transformer.setOutputProperty(OutputKeys.ENCODING, encoding);
             transformer.transform(source, result);
         } catch (Exception e) {

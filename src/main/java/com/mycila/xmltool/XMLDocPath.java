@@ -39,7 +39,7 @@ final class XMLDocPath {
 
     XMLDocPath(XMLDocDefinition context) {
         try {
-            xpath = XPathFactory.newInstance().newXPath();
+            xpath = XMLFactories.createXPath();
             xpath.setNamespaceContext(context);
         }
         catch (Exception e) {

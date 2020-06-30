@@ -6,7 +6,8 @@ install: /bin/true
 
 jdk:
   - openjdk7
-  - oraclejdk7
+  # No longer supported - see https://github.com/travis-ci/travis-ci/issues/7884#issuecomment-308451879
+  # - oraclejdk7
 
 branches:
   only:
