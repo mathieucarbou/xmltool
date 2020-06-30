@@ -66,6 +66,16 @@ public interface XMLTag {
     com.mycila.xmltool.XMLTag addAttribute(String name, String value);
 
     /**
+     * Create a new attribute for the current node
+     *
+     * @param namespaceURI  The URI of the namespace, can be <code>null</code>
+     * @param name  Name of the attribute to add
+     * @param value value of the attribute to add
+     * @return this
+     */
+    com.mycila.xmltool.XMLTag addAttributeNS(String namespaceURI, String name, String value);
+
+    /**
      * Add a text node under the current node, and jump to the parent node. This enables the create or quick documents like this:
      * 
      * <code>addTag("name").addText("Bob")addTag("sex").addText("M")addTag("age").addText("30")</code>

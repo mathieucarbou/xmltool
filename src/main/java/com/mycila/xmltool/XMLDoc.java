@@ -197,6 +197,14 @@ public final class XMLDoc implements XMLTag {
         return this;
     }
 
+    public XMLTag addAttributeNS(String namespaceURI, String name, String value) {
+        if (hasAttribute(name)) {
+            throw new XMLDocumentException("Attribute '%s' already exist on tag '%s'", name, getCurrentTagName());
+        }
+        definition.createAttributeNS(current, namespaceURI, name, value);
+        return this;
+    }
+
     public XMLTag addAttribute(Attr attr) {
         notNull("DOM Attribute", attr);
         if (hasAttribute(attr.getName())) {
