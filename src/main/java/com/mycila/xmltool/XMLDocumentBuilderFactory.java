@@ -38,6 +38,12 @@ public class XMLDocumentBuilderFactory {
         config.setMaxTotal(Runtime.getRuntime().availableProcessors() * 4);
         config.setMaxWaitMillis(-1);
 
+        try {
+            Class.forName("java.lang.management.ManagementFactory");
+        } catch (Exception e) {
+            config.setJmxEnabled(false);
+        }
+
         setPoolConfig(config);
     }
 
