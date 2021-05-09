@@ -77,7 +77,7 @@ __Maven dependency__
 
 __Maven sites__
 
- - [4.0.ga] (http://mycila.github.io/xmltool/reports/4.0.ga/index.html)
+ - [4.0.ga] (http://mycila.carbou.me/xmltool/reports/4.0.ga/index.html)
 
 ## Documentation ##
 
