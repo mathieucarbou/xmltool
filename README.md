@@ -53,9 +53,8 @@ With XML Tool you will be able to quickly:
 
 __Project status__
 
- - __Issues:__ https://github.com/mycila/xmltool/issues
+ - __Issues:__ https://github.com/mathieucarbou/xmltool/issues
  - __OSGI Compliant:__ <img width="100px" src="http://www.sonatype.com/system/images/W1siZiIsIjIwMTMvMDQvMTIvMTEvNDAvMzcvMTgzL05leHVzX0ZlYXR1cmVfTWF0cml4X29zZ2lfbG9nby5wbmciXV0/Nexus-Feature-Matrix-osgi-logo.png" title="OSGI Compliant"></img>
- - __Build Status:__ [![Build Status](https://travis-ci.org/mycila/xmltool.png?branch=master)](https://travis-ci.org/mycila/xmltool)
 
 ## Maven Repository ##
 
@@ -77,7 +76,7 @@ __Maven dependency__
 
 __Maven sites__
 
- - [4.0.ga] (http://mycila.carbou.me/xmltool/reports/4.0.ga/index.html)
+ - [4.0.ga] (http://oss.carbou.me/xmltool/reports/4.0.ga/index.html)
 
 ## Documentation ##
 
