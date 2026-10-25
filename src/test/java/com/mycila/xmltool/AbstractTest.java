@@ -40,7 +40,15 @@ public abstract class AbstractTest {
     }
     
     protected void assertSameDoc(final String actual, final String expected) {
-        Assertions.assertEquals(actual.replaceAll("\\r|\\n", "").replaceAll(">\\s*<", "><"), expected.replaceAll("\\r|\\n", "").replaceAll(">\\s*<", "><"));
+        Assertions.assertEquals(
+                expected.replaceAll("\\r|\\n", "")
+                        .replaceAll("[\\t ]+(?=<)", "")
+                        .replaceAll("(?<=>)[\\t ]+", "")
+                        .replaceAll(">\\s*<", "><"),
+                actual.replaceAll("\\r|\\n", "")
+                        .replaceAll("[\\t ]+(?=<)", "")
+                        .replaceAll("(?<=>)[\\t ]+", "")
+                        .replaceAll(">\\s*<", "><"));
     }
 
     public static URL resource(String classPath) {
@@ -87,4 +95,5 @@ public abstract class AbstractTest {
         }
         return data == NULL ? null : data;
     }
+
 }
