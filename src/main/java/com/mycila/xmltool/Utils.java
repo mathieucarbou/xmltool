@@ -37,7 +37,7 @@ final class Utils {
 
     static String getMessage(Throwable cause) {
         String message = null;
-        while (cause != null && (message == null || message.length() == 0)) {
+        while (cause != null && (message == null || message.isEmpty())) {
             message = cause.getMessage();
             cause = cause.getCause();
         }
@@ -50,7 +50,7 @@ final class Utils {
 
     static void notEmpty(String name, String value) {
         notNull(name, value);
-        if (value.length() == 0) {
+        if (value.isEmpty()) {
             throw new IllegalArgumentException(name + " cannot be empty");
         }
     }
