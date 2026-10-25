@@ -23,7 +23,7 @@
         <groupId>com.mycila</groupId>
         <artifactId>mycila-pom</artifactId>
         <version>13</version>
-        <relativePath>../pom</relativePath>
+        <relativePath />
     </parent>
 
     <groupId>com.mycila</groupId>
