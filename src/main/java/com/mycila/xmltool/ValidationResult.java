@@ -19,15 +19,15 @@ package com.mycila.xmltool;
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
 public interface ValidationResult {
-    public Throwable[] getErrors();
+    Throwable[] getErrors();
 
-    public Throwable[] getWarnings();
+    Throwable[] getWarnings();
 
-    public String[] getErrorMessages();
+    String[] getErrorMessages();
 
-    public String[] getWarningMessages();
+    String[] getWarningMessages();
 
-    public boolean hasError();
+    boolean hasError();
 
-    public boolean hasWarning();
+    boolean hasWarning();
 }
