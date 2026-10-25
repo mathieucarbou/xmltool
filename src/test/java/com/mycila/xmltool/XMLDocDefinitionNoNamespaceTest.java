@@ -1,11 +1,11 @@
-/**
- * Copyright (C) 2008 Mycila (mathieu.carbou@gmail.com)
+/*
+ * Copyright © 2008-2021 Mathieu Carbou (mathieu.carbou@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *         http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,7 @@
  */
 package com.mycila.xmltool;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
@@ -24,17 +24,17 @@ import java.util.Iterator;
 
 import static com.mycila.xmltool.Assert.Code;
 import static com.mycila.xmltool.Assert.assertThrow;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class XMLDocDefinitionNoNamespaceTest {
+class XMLDocDefinitionNoNamespaceTest {
 
     @Test
-    public void test_rename() throws Exception {
+    void test_rename() throws Exception {
         XMLTag doc = XMLDoc.newDocument(true).addNamespace("t", "ns").addRoot("t:root");
         XMLDocDefinition def = new XMLDocDefinition(doc.toDocument(), true);
         assertEquals(def.getRoot().getNodeName(), "root");
@@ -43,7 +43,7 @@ public final class XMLDocDefinitionNoNamespaceTest {
     }
 
     @Test
-    public void test_createElement() throws Exception {
+    void test_createElement() throws Exception {
         XMLTag doc = XMLDoc.newDocument(true).addNamespace("t", "ns").addRoot("t:root");
         XMLDocDefinition def = new XMLDocDefinition(doc.toDocument(), true);
         assertEquals(def.getRoot().getNodeName(), "root");
@@ -54,7 +54,7 @@ public final class XMLDocDefinitionNoNamespaceTest {
     }
 
     @Test
-    public void test_createAttribute() throws Exception {
+    void test_createAttribute() throws Exception {
         XMLTag doc = XMLDoc.newDocument(true).addNamespace("t", "ns").addRoot("t:root");
         XMLDocDefinition def = new XMLDocDefinition(doc.toDocument(), true);
         assertEquals(def.getRoot().getNodeName(), "root");
@@ -65,7 +65,7 @@ public final class XMLDocDefinitionNoNamespaceTest {
     }
 
     @Test
-    public void test_ctor() throws Exception {
+    void test_ctor() throws Exception {
         XMLTag doc = XMLDoc.from(getClass().getResource("/xpath.xml"), true);
         XMLDocDefinition def = new XMLDocDefinition(doc.toDocument(), true);
         assertEquals(def.getDocument(), doc.toDocument());
@@ -74,14 +74,14 @@ public final class XMLDocDefinitionNoNamespaceTest {
     }
 
     @Test
-    public void test_namepsace_generation() throws Exception {
+    void test_namepsace_generation() throws Exception {
         XMLTag doc = XMLDoc.from(getClass().getResource("/xpath3.xml"), true);
         XMLDocDefinition def = new XMLDocDefinition(doc.toDocument(), true);
         assertNull(def.getPrefix("http://ns3.com"));
     }
 
     @Test
-    public void test_getNamespaceURI_null() throws Exception {
+    void test_getNamespaceURI_null() throws Exception {
         assertThrow(IllegalArgumentException.class).withMessage("prefix cannot be null").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLTag doc = XMLDoc.from(getClass().getResource("/xpath3.xml"), true);
@@ -92,7 +92,7 @@ public final class XMLDocDefinitionNoNamespaceTest {
     }
 
     @Test
-    public void test_getNamespaceURI() throws Exception {
+    void test_getNamespaceURI() throws Exception {
         XMLTag doc = XMLDoc.from(getClass().getResource("/xpath3.xml"), true);
         XMLDocDefinition def = new XMLDocDefinition(doc.toDocument(), true);
         assertEquals(def.getNamespaceURI("ns2"), XMLConstants.NULL_NS_URI);
@@ -100,7 +100,7 @@ public final class XMLDocDefinitionNoNamespaceTest {
     }
 
     @Test
-    public void test_getPrefix_null() throws Exception {
+    void test_getPrefix_null() throws Exception {
         assertThrow(IllegalArgumentException.class).withMessage("namespaceURI cannot be null").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLTag doc = XMLDoc.from(getClass().getResource("/xpath3.xml"), true);
@@ -111,7 +111,7 @@ public final class XMLDocDefinitionNoNamespaceTest {
     }
 
     @Test
-    public void test_getPrefix() throws Exception {
+    void test_getPrefix() throws Exception {
         XMLTag doc = XMLDoc.from(getClass().getResource("/xpath3.xml"), true);
         XMLDocDefinition def = new XMLDocDefinition(doc.toDocument(), true);
         def.addDefaultNamespace("http://ns10.com");
@@ -121,7 +121,7 @@ public final class XMLDocDefinitionNoNamespaceTest {
     }
 
     @Test
-    public void test_getPrefixes() throws Exception {
+    void test_getPrefixes() throws Exception {
         XMLTag doc = XMLDoc.from(getClass().getResource("/xpath3.xml"), true);
         XMLDocDefinition def = new XMLDocDefinition(doc.toDocument(), true);
         def.addDefaultNamespace("http://ns3.com");
@@ -130,7 +130,7 @@ public final class XMLDocDefinitionNoNamespaceTest {
     }
 
     @Test
-    public void test_getPrefixes_null() throws Exception {
+    void test_getPrefixes_null() throws Exception {
         assertThrow(IllegalArgumentException.class).withMessage("namespaceURI cannot be null").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLTag doc = XMLDoc.from(getClass().getResource("/xpath3.xml"), true);
@@ -141,7 +141,7 @@ public final class XMLDocDefinitionNoNamespaceTest {
     }
 
     @Test
-    public void test_createRoot() throws Exception {
+    void test_createRoot() throws Exception {
         XMLTag doc = XMLDoc.from(getClass().getResource("/xpath3.xml"), true);
         doc.toDocument().removeChild(doc.getCurrentTag());
         XMLDocDefinition def = new XMLDocDefinition(doc.toDocument(), true);
@@ -149,7 +149,7 @@ public final class XMLDocDefinitionNoNamespaceTest {
     }
 
     @Test
-    public void test_getEncoding() throws Exception {
+    void test_getEncoding() throws Exception {
         XMLTag doc = XMLDoc.from(getClass().getResource("/xpath3.xml"), true);
         XMLDocDefinition def = new XMLDocDefinition(doc.toDocument(), true);
         assertEquals(def.getEncoding(), "ISO8859-1");

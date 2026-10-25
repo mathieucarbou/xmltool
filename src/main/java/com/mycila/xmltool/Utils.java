@@ -1,11 +1,11 @@
-/**
- * Copyright (C) 2008 Mycila (mathieu.carbou@gmail.com)
+/*
+ * Copyright © 2008-2021 Mathieu Carbou (mathieu.carbou@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *         http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,7 +37,7 @@ final class Utils {
 
     static String getMessage(Throwable cause) {
         String message = null;
-        while (cause != null && (message == null || message.length() == 0)) {
+        while (cause != null && (message == null || message.isEmpty())) {
             message = cause.getMessage();
             cause = cause.getCause();
         }
@@ -50,7 +50,7 @@ final class Utils {
 
     static void notEmpty(String name, String value) {
         notNull(name, value);
-        if (value.length() == 0) {
+        if (value.isEmpty()) {
             throw new IllegalArgumentException(name + " cannot be empty");
         }
     }

@@ -1,11 +1,11 @@
-/**
- * Copyright (C) 2008 Mycila (mathieu.carbou@gmail.com)
+/*
+ * Copyright © 2008-2021 Mathieu Carbou (mathieu.carbou@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *         http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,8 +22,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.Locale;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -33,14 +33,22 @@ public abstract class AbstractTest {
     private static final SoftHashMap<URL, byte[]> cache = new SoftHashMap<URL, byte[]>();
     private static final byte[] NULL = new byte[0];
 
-    @BeforeClass
-    public static void setLocaleToEN_US() {
+    @BeforeAll
+    static void setLocaleToEN_US() {
       // needed to make tests pass on non-EN/US systems due to localized exception messsages
       Locale.setDefault(Locale.US);
     }
     
     protected void assertSameDoc(final String actual, final String expected) {
-        Assert.assertEquals(actual.replaceAll("\\r|\\n", "").replaceAll(">\\s*<", "><"), expected.replaceAll("\\r|\\n", "").replaceAll(">\\s*<", "><"));
+        Assertions.assertEquals(
+                expected.replaceAll("\\r|\\n", "")
+                        .replaceAll("[\\t ]+(?=<)", "")
+                        .replaceAll("(?<=>)[\\t ]+", "")
+                        .replaceAll(">\\s*<", "><"),
+                actual.replaceAll("\\r|\\n", "")
+                        .replaceAll("[\\t ]+(?=<)", "")
+                        .replaceAll("(?<=>)[\\t ]+", "")
+                        .replaceAll(">\\s*<", "><"));
     }
 
     public static URL resource(String classPath) {
@@ -87,4 +95,5 @@ public abstract class AbstractTest {
         }
         return data == NULL ? null : data;
     }
+
 }

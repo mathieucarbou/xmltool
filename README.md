@@ -678,13 +678,13 @@ __Example:__
         </body>
     </html>
 
- * Namespace http://www.w3.org/2002/06/xhtml2/ is defined in schema http://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd
+ * Namespace http://www.w3.org/2002/06/xhtml2/ is defined in schema https://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd
  * Namespace http://wicket.sourceforge.net/wicket-1.0 is defined in schema http://wicket.sourceforge.net/wicket-1.0.xsd
 
 If we validate the XML document goto.xml seen above:
 
     ValidationResult results = XMLDoc.from(getClass().getResource("/goto.xml")).validate(
-            new URL("http://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd"),
+            new URL("https://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd"),
             new URL("http://wicket.sourceforge.net/wicket-1.0.xsd")
     );
     assertFalse(results.hasError());
@@ -694,7 +694,7 @@ If we validate the following document created by us below:
     results = XMLDoc.newDocument()
             .addDefaultNamespace("http://www.w3.org/2002/06/xhtml2/")
             .addRoot("htmlZZ")
-            .validate(new URL("http://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd"));
+            .validate(new URL("https://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd"));
     assertTrue(results.hasError());
     System.out.println(Arrays.deepToString(results.getErrorMessages()));
 

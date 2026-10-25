@@ -1,11 +1,11 @@
-/**
- * Copyright (C) 2008 Mycila (mathieu.carbou@gmail.com)
+/*
+ * Copyright © 2008-2021 Mathieu Carbou (mathieu.carbou@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *         http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,18 +15,18 @@
  */
 package com.mycila.xmltool;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class XMLDocXPathTest {
+class XMLDocXPathTest {
 
     @Test
-    public void test_xpath() throws Exception {
+    void test_xpath() throws Exception {
         XMLTag tag = XMLDoc.newDocument(true)
             .addRoot("html")
             .addTag("head").addText("one")

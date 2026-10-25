@@ -1,11 +1,11 @@
-/**
- * Copyright (C) 2008 Mycila (mathieu.carbou@gmail.com)
+/*
+ * Copyright © 2008-2021 Mathieu Carbou (mathieu.carbou@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *         http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,8 +15,8 @@
  */
 package com.mycila.xmltool;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -29,62 +29,62 @@ import java.util.Arrays;
 
 import static com.mycila.xmltool.Assert.Code;
 import static com.mycila.xmltool.Assert.assertThrow;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class XMLDocBuilderNoNamespaceTest extends AbstractTest {
+class XMLDocBuilderNoNamespaceTest extends AbstractTest {
 
     @Test
-    public void test_new_doc() {
+    void test_new_doc() {
         assertSameDoc(XMLDocBuilder.newDocument(true).addRoot("html").toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><html/>");
     }
 
     @Test
-    public void test_from_Document() {
+    void test_from_Document() {
         Document d = XMLDocBuilder.newDocument(true).addRoot("html").addTag("head").gotoParent().addTag("body").toDocument();
         assertSameDoc(XMLDocBuilder.from(d, true).toDocument().getFirstChild().getNodeName(), "html");
     }
 
     @Test
-    public void test_from_InputSource() {
+    void test_from_InputSource() {
         assertSameDoc(XMLDocBuilder.from(new InputSource(new StringReader("<html></html>")), true).toDocument().getFirstChild().getNodeName(), "html");
     }
 
     @Test
-    public void test_from_Reader() {
+    void test_from_Reader() {
         assertSameDoc(XMLDocBuilder.from(new StringReader("<html></html>"), true).toDocument().getFirstChild().getNodeName(), "html");
     }
 
     @Test
-    public void test_from_InputStream() {
+    void test_from_InputStream() {
         assertSameDoc(XMLDocBuilder.from(new ByteArrayInputStream("<html></html>".getBytes()), true).toDocument().getFirstChild().getNodeName(), "html");
     }
 
     @Test
-    public void test_from_File() {
+    void test_from_File() {
         assertSameDoc(XMLDocBuilder.from(new File("src/test/resources/doc.xhtml"), true).toDocument().getFirstChild().getNodeName(), "html");
     }
 
     @Test
-    public void test_from_Url() {
+    void test_from_Url() {
         assertSameDoc(XMLDocBuilder.from(XMLDocTest.class.getResource("/doc.xhtml"), true).toDocument().getFirstChild().getNodeName(), "html");
     }
 
     @Test
-    public void test_from_String() {
+    void test_from_String() {
         assertSameDoc(XMLDocBuilder.from("<html></html>", true).toDocument().getFirstChild().getNodeName(), "html");
     }
 
     @Test
-    public void test_from_Source() {
+    void test_from_Source() {
         Document d = XMLDocBuilder.newDocument(true).addRoot("html").addTag("head").gotoParent().addTag("body").toDocument();
         assertSameDoc(XMLDocBuilder.from(new DOMSource(d), true).toDocument().getFirstChild().getNodeName(), "html");
     }
 
     @Test
-    public void test_from_malformed_source1() {
+    void test_from_malformed_source1() {
         assertThrow(XMLDocumentException.class).withMessage("Error creating XMLDoc. Please verify that the input source can be read and is well formed - org.xml.sax.SAXParseException; lineNumber: 1; columnNumber: 13; XML document structures must start and end within the same entity.").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLDocBuilder.from(new StreamSource(new StringReader("<html><html>")), true);
@@ -93,7 +93,7 @@ public final class XMLDocBuilderNoNamespaceTest extends AbstractTest {
     }
 
     @Test
-    public void validate_URL_NS() throws Exception {
+    void validate_URL_NS() throws Exception {
         XMLTag doc  = XMLDoc.from(readString("doc2.xhtml"), false);
         ValidationResult res = doc.validate(getClass().getResource("/doc.xsd"));
         assertFalse(res.hasError());
@@ -103,10 +103,10 @@ public final class XMLDocBuilderNoNamespaceTest extends AbstractTest {
         assertFalse(res.hasWarning());
     }
 
+    @Disabled
     @Test
-    @Ignore
     //when we ignore namespace, validation becomes unpredictable on diffrent jdk versions
-    public void validate_URL() throws Exception {
+    void validate_URL() throws Exception {
         XMLTag doc  = XMLDoc.from(readString("doc2.xhtml"), true);
         ValidationResult res = doc.validate(getClass().getResource("/doc.xsd"));
         assertFalse(res.hasError());
@@ -116,10 +116,10 @@ public final class XMLDocBuilderNoNamespaceTest extends AbstractTest {
         assertFalse(res.hasWarning());
     }
 
+    @Disabled
     @Test
-    @Ignore
     //when we ignore namespace, validation becomes unpredictable on diffrent jdk versions
-    public void validate_URL_invalid() throws Exception {
+    void validate_URL_invalid() throws Exception {
         XMLTag doc  = XMLDoc.from(readString("doc3.xhtml"), true);
         ValidationResult res = doc.validate(getClass().getResource("/doc.xsd"));
         assertTrue(res.hasError());
@@ -128,7 +128,7 @@ public final class XMLDocBuilderNoNamespaceTest extends AbstractTest {
     }
 
     @Test
-    public void test_from_malformed() {
+    void test_from_malformed() {
         assertThrow(XMLDocumentException.class).withMessage("Error creating XMLDoc. Please verify that the input source can be read and is well formed. - XML document structures must start and end within the same entity.").whenRunning(new Code() {
             public void run() throws Throwable {
                 assertSameDoc(XMLDocBuilder.from("<html><html>", true).toDocument().getFirstChild().getNodeName(), "html");
@@ -137,7 +137,7 @@ public final class XMLDocBuilderNoNamespaceTest extends AbstractTest {
     }
 
     @Test
-    public void test_from_malformed_source2() {
+    void test_from_malformed_source2() {
         assertThrow(XMLDocumentException.class).withMessage("Error creating XMLDoc. Please verify that the input source can be read and is well formed. - Premature end of file.").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLDocBuilder.from("", true);
@@ -146,7 +146,7 @@ public final class XMLDocBuilderNoNamespaceTest extends AbstractTest {
     }
 
     @Test
-    public void test_namespace() throws Exception {
+    void test_namespace() throws Exception {
         XMLTag doc  = XMLDoc.newDocument(true)
                 .addDefaultNamespace("http://ns1.com")
                 .addNamespace("ns2", "http://ns2.com")
@@ -155,7 +155,7 @@ public final class XMLDocBuilderNoNamespaceTest extends AbstractTest {
     }
 
     @Test
-    public void test_from_XMLTag() throws Exception {
+    void test_from_XMLTag() throws Exception {
         XMLTag tag = XMLDoc.newDocument(true)
                 .addDefaultNamespace("http://default")
                 .addNamespace("toto", "http://toto")

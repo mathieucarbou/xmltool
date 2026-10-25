@@ -1,11 +1,11 @@
-/**
- * Copyright (C) 2008 Mycila (mathieu.carbou@gmail.com)
+/*
+ * Copyright © 2008-2021 Mathieu Carbou (mathieu.carbou@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *         http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -76,16 +76,19 @@ final class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
         putAll(t);
     }
 
+    @Override
     public int size() {
         if (size == 0) return 0;
         expungeStaleEntries();
         return size;
     }
 
+    @Override
     public boolean isEmpty() {
         return size() == 0;
     }
 
+    @Override
     public V get(Object key) {
         Object k = maskNull(key);
         int h = hash(k);
@@ -99,6 +102,7 @@ final class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
         return null;
     }
 
+    @Override
     public V put(K key, V value) {
         K k = SoftHashMap.<K>maskNull(key);
         int h = hash(k);
@@ -118,10 +122,12 @@ final class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
         return null;
     }
 
+    @Override
     public boolean containsKey(Object key) {
         return getEntry(key) != null;
     }
 
+    @Override
     public void putAll(Map<? extends K, ? extends V> m) {
         int numKeysToBeAdded = m.size();
         if (numKeysToBeAdded == 0) return;
@@ -138,6 +144,7 @@ final class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
         }
     }
 
+    @Override
     public V remove(Object key) {
         Object k = maskNull(key);
         int h = hash(k);
@@ -160,6 +167,7 @@ final class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
         return null;
     }
 
+    @Override
     public void clear() {
         while (queue.poll() != null) ;
         modCount++;
@@ -169,6 +177,7 @@ final class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
         while (queue.poll() != null) ;
     }
 
+    @Override
     public boolean containsValue(Object value) {
         if (value == null) return containsNullValue();
         Entry[] tab = getTable();
@@ -179,11 +188,13 @@ final class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
         return false;
     }
 
+    @Override
     public Set<K> keySet() {
         Set<K> ks = keySet;
         return (ks != null ? ks : (keySet = new KeySet()));
     }
 
+    @Override
     public Collection<V> values() {
         Collection<V> vs = values;
         return (vs != null ? vs : (values = new Values()));
@@ -426,6 +437,7 @@ final class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
             return lastReturned;
         }
 
+        @Override
         public void remove() {
             if (lastReturned == null) throw new IllegalStateException();
             if (modCount != expectedModCount) throw new ConcurrentModificationException();
@@ -463,10 +475,12 @@ final class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
             return SoftHashMap.this.size();
         }
 
+        @Override
         public boolean contains(Object o) {
             return containsKey(o);
         }
 
+        @Override
         public boolean remove(Object o) {
             if (containsKey(o)) {
                 SoftHashMap.this.remove(o);
@@ -474,16 +488,19 @@ final class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
             } else return false;
         }
 
+        @Override
         public void clear() {
             SoftHashMap.this.clear();
         }
 
+        @Override
         public Object[] toArray() {
             Collection<K> c = new ArrayList<K>(size());
             for (Iterator<K> i = iterator(); i.hasNext();) c.add(i.next());
             return c.toArray();
         }
 
+        @Override
         public <T> T[] toArray(T[] a) {
             Collection<K> c = new ArrayList<K>(size());
             for (Iterator<K> i = iterator(); i.hasNext();) c.add(i.next());
@@ -500,20 +517,24 @@ final class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
             return SoftHashMap.this.size();
         }
 
+        @Override
         public boolean contains(Object o) {
             return containsValue(o);
         }
 
+        @Override
         public void clear() {
             SoftHashMap.this.clear();
         }
 
+        @Override
         public Object[] toArray() {
             Collection<V> c = new ArrayList<V>(size());
             for (Iterator<V> i = iterator(); i.hasNext();) c.add(i.next());
             return c.toArray();
         }
 
+        @Override
         public <T> T[] toArray(T[] a) {
             Collection<V> c = new ArrayList<V>(size());
             for (Iterator<V> i = iterator(); i.hasNext();) c.add(i.next());
@@ -526,6 +547,7 @@ final class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
             return new EntryIterator();
         }
 
+        @Override
         public boolean contains(Object o) {
             if (!(o instanceof Map.Entry)) return false;
             Map.Entry e = (Map.Entry) o;
@@ -533,6 +555,7 @@ final class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
             return candidate != null && candidate.equals(e);
         }
 
+        @Override
         public boolean remove(Object o) {
             return removeMapping(o) != null;
         }
@@ -541,10 +564,12 @@ final class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
             return SoftHashMap.this.size();
         }
 
+        @Override
         public void clear() {
             SoftHashMap.this.clear();
         }
 
+        @Override
         public Object[] toArray() {
             Collection<Map.Entry<K, V>> c = new ArrayList<Map.Entry<K, V>>(size());
             for (Iterator<Map.Entry<K, V>> i = iterator(); i.hasNext();)
@@ -552,6 +577,7 @@ final class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
             return c.toArray();
         }
 
+        @Override
         public <T> T[] toArray(T[] a) {
             Collection<Map.Entry<K, V>> c = new ArrayList<Map.Entry<K, V>>(size());
             for (Iterator<Map.Entry<K, V>> i = iterator(); i.hasNext();)
