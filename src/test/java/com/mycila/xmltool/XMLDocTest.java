@@ -43,7 +43,7 @@ class XMLDocTest extends AbstractTest {
                 .addRoot("html"));
 
         System.out.println(XMLDoc.newDocument(false)
-                .addDefaultNamespace("http://www.w3.org/2002/06/xhtml2/") // http://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd
+                .addDefaultNamespace("http://www.w3.org/2002/06/xhtml2/") // https://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd
                 .addNamespace("wicket", "http://wicket.sourceforge.net/wicket-1.0") // http://wicket.sourceforge.net/wicket-1.0.xsd
                 .addRoot("html")
                 .addTag("wicket:border")
@@ -97,15 +97,15 @@ class XMLDocTest extends AbstractTest {
         assertEquals(doc.getAttribute("ns0:id"), "titleID");
 
         ValidationResult results = XMLDoc.from(getClass().getResource("/goto.xml"), false).validate(
-                new URL("http://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd"),
-                new URL("http://wicket.sourceforge.net/wicket-1.0.xsd")
+                new URL("https://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd"),
+                getClass().getResource("/wicket-1.0.xsd")
         );
         assertFalse(results.hasError());
 
         results = XMLDoc.newDocument(false)
                 .addDefaultNamespace("http://www.w3.org/2002/06/xhtml2/")
                 .addRoot("htmlZZ")
-                .validate(new URL("http://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd"));
+                .validate(new URL("https://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd"));
         assertTrue(results.hasError());
         System.out.println(Arrays.deepToString(results.getErrorMessages()));
 
@@ -998,8 +998,8 @@ class XMLDocTest extends AbstractTest {
                 .gotoRoot().addTag("head")
                 .addNamespace("other", "http://other-ns.com")
                 .gotoRoot().addTag("other:foo")
-                .validate(new URL("http://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd"),
-                        new URL("http://wicket.sourceforge.net/wicket-1.0.xsd"));
+                .validate(new URL("https://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd"),
+                        getClass().getResource("/wicket-1.0.xsd"));
         assertFalse(res.hasError());
         assertFalse(res.hasWarning());
     }
@@ -1014,8 +1014,8 @@ class XMLDocTest extends AbstractTest {
                 .gotoRoot().addTag("head")
                 .addNamespace("other", "http://other-ns.com")
                 .gotoRoot().addTag("other:foo")
-                .validate(new URL("http://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd"),
-                        new URL("http://wicket.sourceforge.net/wicket-1.0.xsd"));
+                .validate(new URL("https://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd"),
+                        getClass().getResource("/wicket-1.0.xsd"));
         assertTrue(res.hasError());
         assertFalse(res.hasWarning());
         System.out.println(Arrays.deepToString(res.getErrorMessages()));
