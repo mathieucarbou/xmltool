@@ -36,7 +36,7 @@
     <url>http://mycila.github.io/${mycila.github.name}</url>
 
     <properties>
-        <jdk.version>1.6</jdk.version>
+        <jdk.version>8</jdk.version>
         <mycila.github.name>xmltool</mycila.github.name>
     </properties>
 
