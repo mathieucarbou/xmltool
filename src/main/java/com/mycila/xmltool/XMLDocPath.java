@@ -22,7 +22,6 @@ import javax.xml.namespace.QName;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 import java.util.Map;
 
 import static com.mycila.xmltool.Utils.notEmpty;
