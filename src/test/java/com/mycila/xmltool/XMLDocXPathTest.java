@@ -15,18 +15,18 @@
  */
 package com.mycila.xmltool;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class XMLDocXPathTest {
+class XMLDocXPathTest {
 
     @Test
-    public void test_xpath() throws Exception {
+    void test_xpath() throws Exception {
         XMLTag tag = XMLDoc.newDocument(true)
             .addRoot("html")
             .addTag("head").addText("one")

@@ -15,17 +15,17 @@
  */
 package com.mycila.xmltool;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class ExceptionUtilsTest {
+class ExceptionUtilsTest {
     @SuppressWarnings({"ThrowableInstanceNeverThrown"})
     @Test
-    public void getMessage() throws Exception {
+    void getMessage() throws Exception {
         assertEquals(Utils.getMessage(null), "no description available");
         assertEquals(Utils.getMessage(new Exception()), "no description available");
         assertEquals(Utils.getMessage(new Exception("message")), "message");

@@ -15,20 +15,20 @@
  */
 package com.mycila.xmltool;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.mycila.xmltool.Assert.Code;
 import static com.mycila.xmltool.Assert.assertThrow;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class XMLDocPathNoNamespaceTest extends AbstractTest {
+class XMLDocPathNoNamespaceTest extends AbstractTest {
 
     @Test
-    public void test_goto_xpath_get_from_cache() {
+    void test_goto_xpath_get_from_cache() {
         XMLTag doc = XMLDoc.from(getClass().getResource("/xpath.xml"), true);
         XMLDocPath xpath = new XMLDocPath((XMLDocDefinition) doc.getContext());
         assertEquals(xpath.findNode(doc.getCurrentTag(), "head").getNodeName(), "ns2:head");
@@ -38,7 +38,7 @@ public final class XMLDocPathNoNamespaceTest extends AbstractTest {
     }
 
     @Test
-    public void test_goto_xpath_inexisting_node() {
+    void test_goto_xpath_inexisting_node() {
         assertThrow(XMLDocumentException.class).withMessage("Error executing xpath 'inexisting' from node 'html': Inexisting target node.").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLTag doc = XMLDoc.from(getClass().getResource("/xpath.xml"), true);
@@ -49,7 +49,7 @@ public final class XMLDocPathNoNamespaceTest extends AbstractTest {
     }
 
     @Test
-    public void test_goto_xpath_inexisting_node2() {
+    void test_goto_xpath_inexisting_node2() {
         assertThrow(IllegalArgumentException.class).withMessage("XPath expression cannot be null").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLTag doc = XMLDoc.from(getClass().getResource("/xpath.xml"), true);
@@ -60,7 +60,7 @@ public final class XMLDocPathNoNamespaceTest extends AbstractTest {
     }
 
     @Test
-    public void test_goto_xpath_inexisting_node3() {
+    void test_goto_xpath_inexisting_node3() {
         assertThrow(IllegalArgumentException.class).withMessage("XPath expression cannot be empty").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLTag doc = XMLDoc.from(getClass().getResource("/xpath.xml"), true);
@@ -71,7 +71,7 @@ public final class XMLDocPathNoNamespaceTest extends AbstractTest {
     }
 
     @Test
-    public void invalid_xpath() {
+    void invalid_xpath() {
         assertThrow(XMLDocumentException.class).withMessage("Error compiling xpath '..v' - A location path was expected, but the following token was encountered:  ..v").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLTag doc = XMLDoc.from(getClass().getResource("/xpath.xml"), true);
@@ -82,28 +82,28 @@ public final class XMLDocPathNoNamespaceTest extends AbstractTest {
     }
 
     @Test
-    public void xpath_findNodes_0() throws Exception {
+    void xpath_findNodes_0() throws Exception {
         XMLTag doc = XMLDoc.from(getClass().getResource("/xpath.xml"), true);
         XMLDocPath xpath = new XMLDocPath((XMLDocDefinition) doc.getContext());
         assertEquals(xpath.findNodes(doc.getCurrentTag().getFirstChild(), "sss").length, 0);
     }
 
     @Test
-    public void xpath_findNodes_0_for_invalid() throws Exception {
+    void xpath_findNodes_0_for_invalid() throws Exception {
         XMLTag doc = XMLDoc.from(getClass().getResource("/xpath.xml"), true);
         XMLDocPath xpath = new XMLDocPath((XMLDocDefinition) doc.getContext());
         assertEquals(xpath.findNodes(doc.getCurrentTag().getFirstChild(), "..v").length, 0);
     }
 
     @Test
-    public void use_case() throws Exception {
+    void use_case() throws Exception {
         XMLTag doc = XMLDoc.from(getClass().getResource("/wantnons.xml"), true);
         doc.gotoChild("S:Body");
         assertEquals(doc.getText("isAccountActiveResponse/state"), "true");
     }
 
     @Test
-    public void test_setText() throws Exception {
+    void test_setText() throws Exception {
         XMLTag doc = XMLDoc.newDocument(true)
                 .addRoot("person")
                 .addTag("name").addCDATA("Math")
@@ -129,7 +129,7 @@ public final class XMLDocPathNoNamespaceTest extends AbstractTest {
     }
 
     @Test
-    public void test_setCDATA() throws Exception {
+    void test_setCDATA() throws Exception {
         XMLTag doc = XMLDoc.newDocument(true)
                 .addRoot("person")
                 .addTag("name").addCDATA("Math")
@@ -155,7 +155,7 @@ public final class XMLDocPathNoNamespaceTest extends AbstractTest {
     }
 
     @Test
-    public void test_setAttribute() throws Exception {
+    void test_setAttribute() throws Exception {
         XMLTag doc = XMLDoc.from(getClass().getResource("/inner.xml"), true);
         doc.gotoChild(1).gotoChild("c");
         assertEquals(doc.hasAttribute("a"), true);

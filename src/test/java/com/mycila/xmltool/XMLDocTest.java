@@ -15,7 +15,7 @@
  */
 package com.mycila.xmltool;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -27,15 +27,15 @@ import java.util.Arrays;
 
 import static com.mycila.xmltool.Assert.Code;
 import static com.mycila.xmltool.Assert.assertThrow;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class XMLDocTest extends AbstractTest {
+class XMLDocTest extends AbstractTest {
 
     @Test
-    public void test_wiki_manual() throws Exception {
+    void test_wiki_manual() throws Exception {
         System.out.println(XMLDoc.newDocument(false).addRoot("html").toString());
 
         System.out.println(XMLDoc.newDocument(false)
@@ -116,7 +116,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_getCDATA_with_getText() {
+    void test_getCDATA_with_getText() {
         XMLTag doc = XMLDoc.newDocument(false).addRoot("test").addCDATA("<\"!@#$%'^&*()>");
         System.out.println(doc.toString());
         System.out.println("Text: " + doc.gotoRoot().getText());
@@ -126,67 +126,67 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_new_doc() {
+    void test_new_doc() {
         assertSameDoc(XMLDoc.newDocument(false).addRoot("html").toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><html/>");
     }
 
     @Test
-    public void test_from_Document() {
+    void test_from_Document() {
         Document d = XMLDoc.newDocument(false).addRoot("html").addTag("head").gotoParent().addTag("body").toDocument();
         assertSameDoc(XMLDoc.from(d, false).toDocument().getFirstChild().getNodeName(), "html");
     }
 
     @Test
-    public void test_from_InputSource() {
+    void test_from_InputSource() {
         assertSameDoc(XMLDoc.from(new InputSource(new StringReader("<html></html>")), false).toDocument().getFirstChild().getNodeName(), "html");
     }
 
     @Test
-    public void test_from_Reader() {
+    void test_from_Reader() {
         assertSameDoc(XMLDoc.from(new StringReader("<html></html>"), false).toDocument().getFirstChild().getNodeName(), "html");
     }
 
     @Test
-    public void test_from_InputStream() {
+    void test_from_InputStream() {
         assertSameDoc(XMLDoc.from(new ByteArrayInputStream("<html></html>".getBytes()), false).toDocument().getFirstChild().getNodeName(), "html");
     }
 
     @Test
-    public void test_from_File() {
+    void test_from_File() {
         assertSameDoc(XMLDoc.from(new File("src/test/resources/doc.xhtml"), false).toDocument().getFirstChild().getNodeName(), "html");
     }
 
     @Test
-    public void test_from_Url() {
+    void test_from_Url() {
         assertSameDoc(XMLDoc.from(XMLDocTest.class.getResource("/doc.xhtml"), false).toDocument().getFirstChild().getNodeName(), "html");
     }
 
     @Test
-    public void test_from_String() {
+    void test_from_String() {
         assertSameDoc(XMLDoc.from("<html></html>", false).toDocument().getFirstChild().getNodeName(), "html");
     }
 
     @Test
-    public void test_from_Source() {
+    void test_from_Source() {
         Document d = XMLDoc.newDocument(false).addRoot("html").addTag("head").gotoParent().addTag("body").toDocument();
         assertSameDoc(XMLDoc.from(new DOMSource(d), false).toDocument().getFirstChild().getNodeName(), "html");
     }
 
     @Test
-    public void test_toString() {
+    void test_toString() {
         XMLTag doc = XMLDoc.newDocument(false).addRoot("html").addTag("head").gotoParent().addTag("body").addText("�a �t� ���");
         assertSameDoc(doc.toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><html><head/><body>�a �t� ���</body></html>");
         assertTrue(doc.toString("ASCII").startsWith("<?xml version=\"1.0\" encoding=\"ASCII\" standalone=\"no\"?>"));
     }
 
     @Test
-    public void test_toDocument() {
+    void test_toDocument() {
         Document doc = XMLDoc.newDocument(false).addRoot("html").addTag("head").gotoParent().addTag("body").addText("�a �t� ���").toDocument();
         assertSameDoc(doc.getFirstChild().getFirstChild().getNodeName(), "head");
     }
 
     @Test
-    public void test_addNode() throws Exception {
+    void test_addNode() throws Exception {
         XMLTag doc = XMLDoc.newDocument(false).addRoot("html")
                 .addTag("head")
                 .gotoRoot()
@@ -195,7 +195,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_addAttribute() throws Exception {
+    void test_addAttribute() throws Exception {
         XMLTag doc = XMLDoc.newDocument(false).addRoot("html")
                 .addAttribute("lang", "en")
                 .addTag("body")
@@ -205,7 +205,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_addAttributeNS() throws Exception {
+    void test_addAttributeNS() throws Exception {
         XMLTag doc = XMLDoc.newDocument(false).addRoot("html")
                 .addAttribute("lang", "en")
                 .addAttributeNS("http://myns", "fish", "taco")
@@ -224,7 +224,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_addAttribute_existing() throws Exception {
+    void test_addAttribute_existing() throws Exception {
         assertThrow(XMLDocumentException.class).withMessage("Attribute 'onclick' already exist on tag 'body'").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLDoc.newDocument(false).addRoot("html")
@@ -238,7 +238,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_addDefaultNamespace() throws Exception {
+    void test_addDefaultNamespace() throws Exception {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addDefaultNamespace("http://myns")
                 .addRoot("html")
@@ -275,7 +275,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_addNamespace_already_bound_xml() throws Exception {
+    void test_addNamespace_already_bound_xml() throws Exception {
         assertThrow(XMLDocumentException.class).withMessage("Prefix 'xml' is already bound to another namespace 'http://www.w3.org/XML/1998/namespace'").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLDoc.newDocument(false).addRoot("html").addNamespace("xml", "http://ns0");
@@ -284,7 +284,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_addNamespace_already_bound_xmlns() throws Exception {
+    void test_addNamespace_already_bound_xmlns() throws Exception {
         assertThrow(XMLDocumentException.class).withMessage("Prefix 'xmlns' is already bound to another namespace 'http://www.w3.org/2000/xmlns/'").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLDoc.newDocument(false).addRoot("html").addNamespace("xmlns", "http://ns0");
@@ -293,7 +293,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_addNamespace_already_bound() throws Exception {
+    void test_addNamespace_already_bound() throws Exception {
         assertThrow(XMLDocumentException.class).withMessage("Prefix 'ns0' is already bound to another namespace 'http://def'").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLDoc.newDocument(false)
@@ -305,7 +305,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_addNamespace_default() throws Exception {
+    void test_addNamespace_default() throws Exception {
         assertThrow(XMLDocumentException.class).withMessage("Prefix '' is already bound to another namespace ''").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLDoc.newDocument(false)
@@ -316,7 +316,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_addNamespace() throws Exception {
+    void test_addNamespace() throws Exception {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addRoot("html")
                 .addTag("ns1:body")
@@ -366,13 +366,13 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_same_namespace() throws Exception {
+    void test_same_namespace() throws Exception {
         XMLTag doc = XMLDoc.from(getClass().getResource("/namespace.xml"), false);
         System.out.println(doc.toString());
     }
 
     @Test
-    public void test_withText() throws Exception {
+    void test_withText() throws Exception {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addRoot("html")
                 .addText("1<2");
@@ -389,7 +389,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_withCDATA() throws Exception {
+    void test_withCDATA() throws Exception {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addRoot("html")
                 .addCDATA("1<2");
@@ -404,7 +404,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_deleteChilds() throws Exception {
+    void test_deleteChilds() throws Exception {
         XMLTag doc = XMLDoc.newDocument(false).addRoot("html").deleteChilds();
         assertSameDoc(doc.toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><html/>");
 
@@ -422,7 +422,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_delete_root() throws Exception {
+    void test_delete_root() throws Exception {
         assertThrow(XMLDocumentException.class).withMessage("Cannot delete root node 'html'").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLDoc.newDocument(false).addRoot("html").delete();
@@ -431,7 +431,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_delete() throws Exception {
+    void test_delete() throws Exception {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addRoot("html")
                 .addTag("aa").addAttribute("a", "b").addTag("bb");
@@ -443,7 +443,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_deleteAttributes() throws Exception {
+    void test_deleteAttributes() throws Exception {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addRoot("html")
                 .deleteAttributes();
@@ -477,7 +477,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_deleteAttribute_inexisting() throws Exception {
+    void test_deleteAttribute_inexisting() throws Exception {
         assertThrow(XMLDocumentException.class).withMessage("Cannot delete attribute 'd' from element 'html': attribute does noe exist").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLDoc.newDocument(false).addRoot("html").deleteAttribute("d");
@@ -486,7 +486,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void deleteAttributeIfExists() throws Exception {
+    void deleteAttributeIfExists() throws Exception {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addRoot("html")
                 .addAttribute("b", "c");
@@ -496,7 +496,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_deleteAttribute() throws Exception {
+    void test_deleteAttribute() throws Exception {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addRoot("html")
                 .addAttribute("a", "b")
@@ -529,7 +529,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void findAttribute() throws Exception {
+    void findAttribute() throws Exception {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addRoot("html")
                 .addAttribute("b", "c");
@@ -539,7 +539,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void findAttributeXPath() throws Exception {
+    void findAttributeXPath() throws Exception {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addRoot("html")
                 .addTag("child")
@@ -551,7 +551,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_renameTo() throws Exception {
+    void test_renameTo() throws Exception {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addDefaultNamespace("http://www.w3.org/1999/xhtml")
                 .addRoot("html")
@@ -565,7 +565,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_renameTo_namepace() throws Exception {
+    void test_renameTo_namepace() throws Exception {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addDefaultNamespace("http://www.w3.org/1999/xhtml")
                 .addRoot("html")
@@ -581,7 +581,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gotoParent() {
+    void test_gotoParent() {
         XMLTag doc = XMLDoc.newDocument(false).addRoot("html");
         assertEquals(doc.getCurrentTagName(), "html");
         assertEquals(doc.gotoParent().getCurrentTagName(), "html");
@@ -592,7 +592,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gotoRoot() {
+    void test_gotoRoot() {
         XMLTag doc = XMLDoc.newDocument(false).addRoot("html");
         assertEquals(doc.getCurrentTagName(), "html");
         assertEquals(doc.gotoRoot().getCurrentTagName(), "html");
@@ -603,7 +603,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gotoNode_inexisting() {
+    void test_gotoNode_inexisting() {
         assertThrow(XMLDocumentException.class).withMessage("Error executing xpath 'a' from node 'html': Inexisting target node.").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLDoc.newDocument(false).addRoot("html").gotoTag("a");
@@ -612,7 +612,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gotoNode_bad_xpath() {
+    void test_gotoNode_bad_xpath() {
         assertThrow(XMLDocumentException.class).withMessage("Error compiling xpath ':-)' - A location path was expected, but the following token was encountered:  :-").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLDoc.newDocument(false).addRoot("html").gotoTag(":-)");
@@ -621,7 +621,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gotoNode_not_target_element() {
+    void test_gotoNode_not_target_element() {
         assertThrow(XMLDocumentException.class).withMessage("XPath expression '..' does not target an element. Targeted node is '#document' (node type is '9')").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLDoc.newDocument(false).addRoot("html").gotoTag("..");
@@ -630,7 +630,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gotoNode_not_target_element2() {
+    void test_gotoNode_not_target_element2() {
         assertThrow(XMLDocumentException.class).withMessage("XPath expression 'text()' does not target an element. Targeted node is '#text' (node type is '3')").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLDoc.newDocument(false).addRoot("html").addText("text").gotoTag("text()");
@@ -639,19 +639,19 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gotoNode_this() {
+    void test_gotoNode_this() {
         XMLTag doc = XMLDoc.newDocument(false).addRoot("html");
         assertEquals(doc.gotoTag(".").getCurrentTagName(), "html");
     }
 
     @Test
-    public void test_gotoNode_parent() {
+    void test_gotoNode_parent() {
         XMLTag doc = XMLDoc.newDocument(false).addRoot("html").addTag("head");
         assertEquals(doc.gotoTag("..").getCurrentTagName(), "html");
     }
 
     @Test
-    public void test_gotoNode_child() {
+    void test_gotoNode_child() {
         XMLTag doc = XMLDoc.newDocument(false).addRoot("html")
                 .addTag("body").addText("txt")
                 .addTag("head").addText("txt1")
@@ -662,7 +662,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gototag_with_formater() {
+    void test_gototag_with_formater() {
         XMLTag doc = XMLDoc.newDocument(false).addRoot("html")
                 .addTag("body").addText("txt")
                 .addTag("head").addText("txt1")
@@ -671,7 +671,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gotoNode_namespace() {
+    void test_gotoNode_namespace() {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addDefaultNamespace("http://www.w3.org/2002/06/xhtml2/")
                 .addNamespace("w", "http://wicket.sourceforge.net/wicket-1.0")
@@ -686,7 +686,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gotoChild_no_child() {
+    void test_gotoChild_no_child() {
         assertThrow(XMLDocumentException.class).withMessage("Current element 'html' has no child").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLTag doc = XMLDoc.newDocument(false).addRoot("html").addText("txt");
@@ -696,7 +696,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gotoChild_too_many() {
+    void test_gotoChild_too_many() {
         assertThrow(XMLDocumentException.class).withMessage("Cannot select child: current element 'html' has '2' children").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLTag doc = XMLDoc.newDocument(false)
@@ -709,7 +709,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gotoChild() {
+    void test_gotoChild() {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addRoot("html").addText("aa")
                 .addTag("child").addText("txt");
@@ -717,7 +717,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gotoChild_with_ns() {
+    void test_gotoChild_with_ns() {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addDefaultNamespace("http://ns1")
                 .addNamespace("ns2", "http://ns2")
@@ -727,7 +727,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gotoChild_i_inexisting1() {
+    void test_gotoChild_i_inexisting1() {
         assertThrow(XMLDocumentException.class).withMessage("Cannot acces child '0' of element 'html' amongst its '2' childs").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLTag doc = XMLDoc.newDocument(false)
@@ -739,7 +739,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gotoChild_i_inexisting2() {
+    void test_gotoChild_i_inexisting2() {
         assertThrow(XMLDocumentException.class).withMessage("Cannot acces child '3' of element 'html' amongst its '2' childs").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLTag doc = XMLDoc.newDocument(false)
@@ -751,7 +751,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gotoChild_i() {
+    void test_gotoChild_i() {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addRoot("html").addTag("child").addText("txt1")
                 .gotoRoot().addTag("child").addText("txt2");
@@ -759,7 +759,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gotoChild_name() {
+    void test_gotoChild_name() {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addRoot("html")
                 .addTag("child").addText("txt1")
@@ -769,7 +769,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gotoChild_name_too_many() {
+    void test_gotoChild_name_too_many() {
         assertThrow(XMLDocumentException.class).withMessage("Cannot select child: current element 'html' has '2' children named 'child'").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLTag doc = XMLDoc.newDocument(false)
@@ -782,7 +782,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gotoChild_name_noone() {
+    void test_gotoChild_name_noone() {
         assertThrow(XMLDocumentException.class).withMessage("Current element 'html' has no child named 'aa'").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLTag doc = XMLDoc.newDocument(false)
@@ -796,7 +796,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_gotoChild_name_noone2() {
+    void test_gotoChild_name_noone2() {
         assertThrow(XMLDocumentException.class).withMessage("Current element 'html' has no child named 'aa'").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLTag doc = XMLDoc.newDocument(false).addRoot("html");
@@ -806,7 +806,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_getCurrentTag_Name() {
+    void test_getCurrentTag_Name() {
         assertSameDoc(XMLDoc.newDocument(false).addRoot("html").getCurrentTag().getNodeName(), "html");
         assertSameDoc(XMLDoc.newDocument(false)
                 .addRoot("html")
@@ -827,7 +827,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_context_and_getprefix() {
+    void test_context_and_getprefix() {
         XMLTag doc = XMLDoc.from(getClass().getResource("/xpath.xml"), false);
         assertEquals(doc.getPefix("http://ns3.com"), "ns0");
         assertEquals(doc.getPefix("http://ns4.com"), "ns3");
@@ -839,7 +839,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_context_and_getprefixes() {
+    void test_context_and_getprefixes() {
         XMLTag doc = XMLDoc.from(getClass().getResource("/namespace.xml"), false);
         assertEquals(doc.getPefixes("").length, 1);
         assertEquals(doc.getPefixes("inexisting").length, 0);
@@ -847,7 +847,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_getText() {
+    void test_getText() {
         XMLTag doc = XMLDoc.newDocument(false).addRoot("html");
         assertSameDoc(doc.getText(), "");
 
@@ -862,7 +862,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_getText_xpath() {
+    void test_getText_xpath() {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addRoot("html")
                 .addTag("nottext")
@@ -881,7 +881,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_getTextOrCDATA() {
+    void test_getTextOrCDATA() {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addRoot("html")
                 .addTag("node1").addText("text")
@@ -895,7 +895,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_getCDATA() {
+    void test_getCDATA() {
         XMLTag doc = XMLDoc.newDocument(false).addRoot("html");
         assertSameDoc(doc.getCDATA(), "");
 
@@ -910,7 +910,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_getCDATA_xpath() {
+    void test_getCDATA_xpath() {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addRoot("html")
                 .addTag("nottext")
@@ -929,7 +929,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_getAttributeNames() {
+    void test_getAttributeNames() {
         XMLTag doc = XMLDoc.newDocument(false).addRoot("html").addNamespace("ns0", "http://ns0");
         assertEquals(doc.getAttributeNames().length, 0);
 
@@ -941,7 +941,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_forEach() {
+    void test_forEach() {
         XMLDoc.from(getClass().getResource("/get.xml"), false).forEach(new CallBack() {
             public void execute(XMLTag doc) {
                 System.out.println(doc.getCurrentTagName() + "'s text: " + doc.getText());
@@ -951,7 +951,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_getAttribute_error() {
+    void test_getAttribute_error() {
         assertThrow(XMLDocumentException.class).withMessage("Element 'html' does not have attribute 'inexisting'").whenRunning(new Code() {
             public void run() throws Throwable {
                 XMLDoc.newDocument(false).addRoot("html").getAttribute("inexisting");
@@ -960,7 +960,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_getAttribute() {
+    void test_getAttribute() {
         XMLTag doc = XMLDoc.newDocument(false).addDefaultNamespace("http://def").addRoot("html").addNamespace("ns1", "http://ns1");
         assertEquals(doc.getAttributeNames().length, 1);
 
@@ -973,7 +973,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_getAttribute_xpath() {
+    void test_getAttribute_xpath() {
         XMLTag doc = XMLDoc.newDocument(false)
                 .addDefaultNamespace("http://def")
                 .addRoot("html")
@@ -989,7 +989,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void validate_URL() throws Exception {
+    void validate_URL() throws Exception {
         ValidationResult res = XMLDoc.newDocument(false)
                 .addDefaultNamespace("http://www.w3.org/2002/06/xhtml2/")
                 .addNamespace("wicket", "http://wicket.sourceforge.net/wicket-1.0")
@@ -1005,7 +1005,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void validate_URL_invalid() throws Exception {
+    void validate_URL_invalid() throws Exception {
         ValidationResult res = XMLDoc.newDocument(false)
                 .addDefaultNamespace("http://www.w3.org/2002/06/xhtml2/")
                 .addNamespace("wicket", "http://wicket.sourceforge.net/wicket-1.0")
@@ -1022,7 +1022,7 @@ public final class XMLDocTest extends AbstractTest {
     }
 
     @Test
-    public void test_clone() throws Exception {
+    void test_clone() throws Exception {
         XMLTag tag = XMLDoc.newDocument(false)
                 .addDefaultNamespace("http://default")
                 .addNamespace("toto", "http://toto")

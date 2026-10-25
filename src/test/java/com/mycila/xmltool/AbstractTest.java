@@ -22,8 +22,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.Locale;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
@@ -33,14 +33,14 @@ public abstract class AbstractTest {
     private static final SoftHashMap<URL, byte[]> cache = new SoftHashMap<URL, byte[]>();
     private static final byte[] NULL = new byte[0];
 
-    @BeforeClass
-    public static void setLocaleToEN_US() {
+    @BeforeAll
+    static void setLocaleToEN_US() {
       // needed to make tests pass on non-EN/US systems due to localized exception messsages
       Locale.setDefault(Locale.US);
     }
     
     protected void assertSameDoc(final String actual, final String expected) {
-        Assert.assertEquals(actual.replaceAll("\\r|\\n", "").replaceAll(">\\s*<", "><"), expected.replaceAll("\\r|\\n", "").replaceAll(">\\s*<", "><"));
+        Assertions.assertEquals(actual.replaceAll("\\r|\\n", "").replaceAll(">\\s*<", "><"), expected.replaceAll("\\r|\\n", "").replaceAll(">\\s*<", "><"));
     }
 
     public static URL resource(String classPath) {

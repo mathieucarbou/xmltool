@@ -15,21 +15,21 @@
  */
 package com.mycila.xmltool;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class XMLDocValidatorTest extends AbstractTest {
+class XMLDocValidatorTest extends AbstractTest {
 
     @Test
-    public void validate_URL() throws Exception {
+    void validate_URL() throws Exception {
         XMLTag doc = XMLDoc.from(readString("doc2.xhtml"), false);
         ValidationResult res = Utils.validate(doc.toDocument(), getClass().getResource("/doc.xsd"));
         assertFalse(res.hasError());
@@ -37,7 +37,7 @@ public final class XMLDocValidatorTest extends AbstractTest {
     }
 
     @Test
-    public void validate_URL_invalid() throws Exception {
+    void validate_URL_invalid() throws Exception {
         XMLTag doc = XMLDoc.from(readString("doc3.xhtml"), false);
         ValidationResult res = Utils.validate(doc.toDocument(), getClass().getResource("/doc.xsd"));
         assertTrue(res.hasError());
@@ -45,10 +45,10 @@ public final class XMLDocValidatorTest extends AbstractTest {
         System.out.println(Arrays.deepToString(res.getErrorMessages()));
     }
 
+    @Disabled
     @Test
-    @Ignore
     //when we ignore namespace, validation becomes unpredictable on diffrent jdk versions
-    public void validate_URL_ignoringNS() throws Exception {
+    void validate_URL_ignoringNS() throws Exception {
         XMLTag doc = XMLDoc.from(readString("doc2.xhtml"), true);
         ValidationResult res = Utils.validate(doc.toDocument(), getClass().getResource("/doc.xsd"));
         System.out.println(Arrays.deepToString(res.getErrorMessages()));
@@ -56,10 +56,10 @@ public final class XMLDocValidatorTest extends AbstractTest {
         assertFalse(res.hasWarning());
     }
 
+    @Disabled
     @Test
-    @Ignore
     //when we ignore namespace, validation becomes unpredictable on diffrent jdk versions
-    public void validate_URL_invalid_ignoringNS() throws Exception {
+    void validate_URL_invalid_ignoringNS() throws Exception {
         XMLTag doc = XMLDoc.from(readString("doc3.xhtml"), true);
         ValidationResult res = Utils.validate(doc.toDocument(), getClass().getResource("/doc.xsd"));
         assertTrue(res.hasError());

@@ -15,7 +15,7 @@
  */
 package com.mycila.xmltool;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -23,18 +23,18 @@ import javax.xml.transform.TransformerException;
 
 import static com.mycila.xmltool.Assert.Code;
 import static com.mycila.xmltool.Assert.assertThrow;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Mathieu Carbou (mathieu.carbou@gmail.com)
  */
-public final class XMLErrorHandlerTest {
+class XMLErrorHandlerTest {
 
     @SuppressWarnings({"ThrowableInstanceNeverThrown"})
     @Test
-    public void handle_events() throws Exception {
+    void handle_events() throws Exception {
         XMLErrorHandler handler = new XMLErrorHandler();
 
         assertFalse(handler.hasError());
@@ -58,7 +58,7 @@ public final class XMLErrorHandlerTest {
     }
 
     @Test
-    public void handle_events_and_throw1() throws Exception {
+    void handle_events_and_throw1() throws Exception {
         assertThrow(SAXException.class).withMessage("SAXParseException").whenRunning(new Code() {
             @SuppressWarnings({"ThrowableInstanceNeverThrown"})
             public void run() throws Throwable {
@@ -72,7 +72,7 @@ public final class XMLErrorHandlerTest {
     }
 
     @Test
-    public void handle_events_and_throw2() throws Exception {
+    void handle_events_and_throw2() throws Exception {
         assertThrow(TransformerException.class).withMessage("TransformerException").whenRunning(new Code() {
             @SuppressWarnings({"ThrowableInstanceNeverThrown"})
             public void run() throws Throwable {
@@ -87,7 +87,7 @@ public final class XMLErrorHandlerTest {
     }
 
     @Test
-    public void handle_events_and_throw3() throws Exception {
+    void handle_events_and_throw3() throws Exception {
         assertThrow(SAXException.class).withMessage("SAXParseException").whenRunning(new Code() {
             @SuppressWarnings({"ThrowableInstanceNeverThrown"})
             public void run() throws Throwable {
